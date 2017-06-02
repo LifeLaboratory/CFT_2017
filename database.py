@@ -1,5 +1,6 @@
 import sqlite3
 import uuid
+from check_parents_and_children import check
 
 def create_table_parents():
     conn=sqlite3.connect('database.db')
@@ -27,35 +28,39 @@ def create_table_tasks():
 #create_table_tasks()
 
 def create_parent():
-    data = {"login": "Maria1",
-            "password": "Maria2",
-            "name": "Maria",
-            "surname": "Petrova",
-            "patronymic": "Egorovna",
+    data = {"login": "Sveta1",
+            "password": "Sveta2",
+            "name": "Sveta",
+            "surname": "Ivanova",
+            "patronymic": "Ivanovna",
             "sex": "woman",
             "number_parents": 8888777799994441,
             "number_close": 8888777799994442,
             "number_open": 8888777799994443,
             "number_needs": 8888777799994444,
             "tel_number": 88005553535,
-            "login_child": "Andrew1",
-            "password_child": "Andrew2",
-            "name_child": "Maria",
-            "surname_child": "Petrova",
-            "patronymic_child": "Egorovna",
-            "sex_child": "woman",
+            "login_child": "Max1",
+            "password_child": "Max2",
+            "name_child": "Max",
+            "surname_child": "Petrov",
+            "patronymic_child": "Egorovich",
+            "sex_child": "man",
             }
-    conn=sqlite3.connect('database.db')
-    c = conn.cursor()
-    uid_parent = str(uuid.uuid4())
-    uid_child = str(uuid.uuid4())
-    purchases = [(uid_parent, uid_child, data["login"], data["password"], data["name"], data["surname"], data["patronymic"], data["sex"], data["number_parents"], data["number_close"], data["number_open"], data["number_needs"])]
-    #print (purchases)
-    c.executemany('INSERT INTO parents VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', purchases)
-    purchases = [(uid_child, uid_parent, data["login_child"], data["password_child"], data["name_child"], data["surname_child"], data[("patronymic_child")], data["sex_child"], data["number_close"], data["number_open"], data["number_needs"])]
-    c.executemany('INSERT INTO children VALUES (?,?,?,?,?,?,?,?,?,?,?)', purchases)
-    conn.commit()
-    conn.close()
+    answer_check=check(data)
+    if answer_check!=0:
+        print (answer_check["Answer"])
+    else:
+        conn=sqlite3.connect('database.db')
+        c = conn.cursor()
+        uid_parent = str(uuid.uuid4())
+        uid_child = str(uuid.uuid4())
+        purchases = [(uid_parent, uid_child, data["login"], data["password"], data["name"], data["surname"], data["patronymic"], data["sex"], data["number_parents"], data["number_close"], data["number_open"], data["number_needs"])]
+        #print (purchases)
+        c.executemany('INSERT INTO parents VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', purchases)
+        purchases = [(uid_child, uid_parent, data["login_child"], data["password_child"], data["name_child"], data["surname_child"], data[("patronymic_child")], data["sex_child"], data["number_close"], data["number_open"], data["number_needs"])]
+        c.executemany('INSERT INTO children VALUES (?,?,?,?,?,?,?,?,?,?,?)', purchases)
+        conn.commit()
+        conn.close()
 #create_parent()
 
 def create_task():
@@ -86,6 +91,6 @@ def get_table(table):
     con.close
     return result
 
-print(get_table('parents'))
-print(get_table('children'))
-print(get_table('tasks'))
+#print(get_table('parents'))
+#print(get_table('children'))
+#print(get_table('tasks'))
