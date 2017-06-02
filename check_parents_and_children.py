@@ -1,7 +1,7 @@
 import sqlite3
 
 
-def check(data):
+def check_login(data):
 
     con = sqlite3.connect("database.db")
     c = con.cursor()
