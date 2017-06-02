@@ -5,7 +5,7 @@ from check_parents_and_children import check_login
 def create_table_parents():
     conn=sqlite3.connect('database.db')
     c = conn.cursor()
-    c.execute('''create table parents (id_parent int, id_child int, login varchar(255), 
+    c.execute('''create table parents (id_parent varchar(255), id_child varchar(255), login varchar(255), 
     password varchar(255), name varchar(255), surname varchar(255), patronymic varchar(255), 
     sex varchar(255), number_parents int, number_close int, number_open int, number_needs int, 
     balance_needs int, balance_close int, balance_open int )''')
@@ -17,18 +17,18 @@ def create_table_parents():
 def create_table_children():
     conn=sqlite3.connect('database.db')
     c = conn.cursor()
-    c.execute('''create table children (id_child int, id_parent int, login varchar(255), 
+    c.execute('''create table children (id_child varchar(255), id_parent varchar(255), login varchar(255), 
     password varchar(255), name varchar(255), surname varchar(255), patronymic varchar(255), 
     sex varchar(255), number_close int, number_open int, number_needs int, balance_needs int, 
     balance_open )''')
     conn.commit()
     conn.close()
-#create_table_children()
+#reate_table_children()
 
 def create_table_tasks():
     conn=sqlite3.connect('database.db')
     c = conn.cursor()
-    c.execute('''create table tasks (id_task int, id_parent int, id_child int, 
+    c.execute('''create table tasks (id_task varchar(255), id_parent varchar(255), id_child int, 
     description varchar(255), coin int, status int)''')
     conn.commit()
     conn.close()
@@ -76,7 +76,7 @@ def create_parent():
 #create_parent()
 
 def create_task():
-    data = {"id_parent": "b0314eea-41f8-4f64-a2c9-a4ae27be9925",
+    data = {"id_parent": "123c81b7-b9aa-44d3-bb36-dd7f49d248b0",
             "description": 'Kill heretics',
             "coin": 100500,
             }
