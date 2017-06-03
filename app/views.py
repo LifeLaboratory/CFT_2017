@@ -16,6 +16,7 @@ from app.api.database.create_children import create_child
 from app.api.database.login_manager import login_in
 from app.api.database.create_regex import create_regex
 from app.api.database.get_balance import balance_parent, balance_child
+from app.api.database.get_score_childrens import average_score
 # for linux
 """
 import sys
@@ -39,6 +40,7 @@ def index():
             c.execute(sql)
             balance_c = {child[1]+' '+child[2]+' '+child[3]: balance_child(child[0]) for child in c.fetchall()}
             return render_template("index_parent.html",
+                                   len_balance_c=len(balance_c)+1,
                                    balance_p=balance_p,
                                    balance_c=balance_c,
                                    valid = session['status'])
@@ -48,6 +50,7 @@ def index():
             c.execute(sql)
             balance_c = {child[1]+' '+child[2]+' '+child[3]: balance_child(child[0]) for child in c.fetchall()}
             return render_template("index_children.html",
+                                len_balance_c=len(balance_c)+1,
                                    balance_c=balance_c,
                                    valid=session['status'])
     return redirect('/index')
@@ -228,15 +231,13 @@ def add_score():
     if session['id'] is not None:
         if session['status'] == 'parent':
             conn, c = connect_db()
-            sql = ("SELECT id_child, login FROM children where id_parent = '{}'".format(session['id']))
+            sql = (
+            "SELECT id_child, name, surname, patronymic FROM children where id_parent = '{}'".format(session['id']))
             c.execute(sql)
-            form = addregexform()
-            form.childrens.choices = c.fetchall()
-            if form.validate_on_submit():
-                create_regex(form.childrens.data,  form.description.data)
-                return redirect('/index')
-            return render_template('add_regex.html',
+            for child in c.fetchall():
+                _score, score = average_score(child[1] + ' ' + child[2] + ' ' + child[3])
+                print(_score, ' -> ', score)
+            return render_template('score.html',
                                    title='add_regex',
-                                   form=form,
                                    valid=session['status'])
     return redirect('/index')
