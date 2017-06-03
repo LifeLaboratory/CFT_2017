@@ -221,3 +221,22 @@ def add_regex():
                                    form=form,
                                    valid=session['status'])
     return redirect('/index')
+
+
+@app.route('/123', methods=['GET', 'POST'])
+def add_rege123():
+    if session['id'] is not None:
+        if session['status'] == 'parent':
+            conn, c = connect_db()
+            sql = ("SELECT id_child, login FROM children where id_parent = '{}'".format(session['id']))
+            c.execute(sql)
+            form = addregexform()
+            form.childrens.choices = c.fetchall()
+            if form.validate_on_submit():
+                create_regex(form.childrens.data,  form.description.data)
+                return redirect('/index')
+            return render_template('add_regex.html',
+                                   title='add_regex',
+                                   form=form,
+                                   valid=session['status'])
+    return redirect('/index')
