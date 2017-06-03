@@ -40,6 +40,7 @@ def index():
             sql = ("SELECT id_child, name, surname, patronymic FROM children where id_parent = '{}'".format(session['id']))
             c.execute(sql)
             balance_c = {child[1]+' '+child[2]+' '+child[3]: balance_child(child[0]) for child in c.fetchall()}
+            print(session["id"])
             return render_template("index_parent.html",
                                    len_balance_c=len(balance_c)+1,
                                    balance_p=balance_p,
@@ -247,5 +248,5 @@ def add_score():
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
-    session = None
+    session.pop('id', None)
     return render_template('index.html')
