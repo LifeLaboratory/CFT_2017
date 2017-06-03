@@ -8,14 +8,14 @@ from app.forms import AddchildForm, Addtaskform
 from flask import make_response, session
 
 
-# for other os
+# for other os0
 from app.api.database.connect_db import connect_db
 from app.api.database.create_parent import create_parent
 from app.api.database.create_task import create_task
 from app.api.database.create_children import create_child
 from app.api.database.login_manager import login_in
 from app.api.database.create_regex import create_regex
-
+from app.api.database.get_balance import balance_parent, balance_child
 # for linux
 """
 import sys
@@ -31,33 +31,54 @@ from login_manager import login_in
 @app.route('/', methods=['GET'])
 @app.route('/index')
 def index():
-    if request.method == 'GET':
-        return render_template("index.html")
+    if session['id'] is not None:
+        if session['status'] == 'parent':
+            balance_p = balance_parent(session['id'])
+            conn, c = connect_db()
+            sql = ("SELECT id_child FROM children where id_parent = '{}'".format(session['id']))
+            c.execute(sql)
+            balance_c = {child[0]: balance_child(child[0]) for child in c.fetchall()}
+            return render_template("index_parent.html",
+                                   balance_p=balance_p,
+                                   balance_c=balance_c,
+                                   valid = session['status'])
+        elif session['status'] == 'children':
+            conn, c = connect_db()
+            sql = ("SELECT id_child FROM children where id_child = '{}'".format(session['id']))
+            c.execute(sql)
+            balance_c = {child[0]: balance_child(child[0]) for child in c.fetchall()}
+            return render_template("index_children.html",
+                                   balance_c=balance_c,
+                                   valid=session['status'])
 
 
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
-    form = Regform()
-    if form.validate_on_submit():
-        if form.password.data == form.PasswordRepeat.data:
-            answer_check = check_login(form.login.data)
-            if answer_check != 0:
-                return answer_check
-            else:
-                balance_needs = 0
-                balance_close = 0
-                balance_open = 0
-                balance_parent = 0
-                create_parent(form.login.data, form.password.data, form.name.data,
-                            form.surname.data, form.patronymic.data, form.sex.data, form.number_parents.data,
-                              balance_needs, balance_close, balance_open,
-                              balance_parent, form.tel_number.data,)
-                return redirect('/index')
-        else:
-            return "Passwords do not match"
-    return render_template('registration.html',
-        title='Sign In',
-        form=form)
+    if session['id'] is not None:
+        if session['status'] == 'parent':
+            form = Regform()
+            if form.validate_on_submit():
+                if form.password.data == form.PasswordRepeat.data:
+                    answer_check = check_login(form.login.data)
+                    if answer_check != 0:
+                        return answer_check
+                    else:
+                        balance_needs = 0
+                        balance_close = 0
+                        balance_open = 0
+                        balance_parent = 0
+                        create_parent(form.login.data, form.password.data, form.name.data,
+                                    form.surname.data, form.patronymic.data, form.sex.data, form.number_parents.data,
+                                      balance_needs, balance_close, balance_open,
+                                      balance_parent, form.tel_number.data,)
+                        return redirect('/index')
+                else:
+                    return "Passwords do not match"
+            return render_template('registration.html',
+                title='Sign In',
+                form=form,
+                                   valid=session['status'])
+    return redirect('/index')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -74,7 +95,8 @@ def login():
             return redirect('/index')
     return render_template('login.html',
                            title='Sign In',
-                           form=form)
+                           form=form,
+                                   valid=session['status'])
 
 
 @app.route('/add_child', methods=['GET', 'POST'])
@@ -84,14 +106,14 @@ def add_child():
             form = AddchildForm()
             if form.validate_on_submit():
                 uid_parent = session['id']
-                print (session["id"])
                 create_child(uid_parent, form.login.data, form.password.data, form.name.data,
                               form.surname.data, form.patronymic.data, form.sex.data, form.number_close.data,
                               form.number_open.data, form.number_needs.data)
                 return redirect('/index')
             return render_template('add_child.html',
                                    title='Sign In',
-                                   form=form)
+                                   form=form,
+                                   valid=session['status'])
     return redirect('/index')
 
 
@@ -104,15 +126,14 @@ def add_task():
             c.execute(sql)
             form = Addtaskform()
             form.childrens.choices = c.fetchall()
-            print(form.data)
             if form.validate_on_submit():
                 uid_parent = session['id_parent']
                 create_task(uid_parent, form.childrens.data,  form.description.data, form.coin.data)
-                print(1)
                 return redirect('/index')
             return render_template('add_task.html',
                                    title='add_task',
-                                   form=form)
+                                   form=form,
+                                   valid=session['status'])
     return redirect('/index')
 
 
@@ -124,12 +145,12 @@ def view_task():
             sql = ("SELECT children.name, children.surname, children.patronymic, tasks.description, tasks.coin,"
                    " tasks.status  FROM tasks, children where tasks.id_parent = '{}' and children.id_parent = '{}'"
                    "".format(session['id'], session['id']))
-            print(sql)
+
             c.execute(sql)
             result = c.fetchall()
-            print(result)
             return render_template('view_task.html', title='view_task',
-                                       status=session['status'], tasksp=result)
+                                        valid=session['status'],
+                                        tasksp=result)
         elif session['status'] == 'children':
             conn, c = connect_db()
             sql = ("SELECT * FROM tasks where id_child = '{}'".format(session['id']))
@@ -140,7 +161,7 @@ def view_task():
             resul = c.fetchall()
     #   Добавить рендеринг результата
             return render_template('view_task.html', title='view_task',
-                               status=session['status'], tasks=result, fio=resul[0])
+                                   valid=session['status'], tasks=result, fio=resul[0])
     return redirect('/index')
 
 
@@ -162,7 +183,8 @@ def close_task():
                 return redirect('/index')
             return render_template('close_task.html',
                                    title='close_task',
-                                   form=form)
+                                   form=form,
+                                   valid=session['status'])
         elif session['status'] == 'children':
             conn, c = connect_db()
             sql = ("SELECT * FROM tasks where id_child = '{}' and status = '0'".format(session['id']))
@@ -177,7 +199,8 @@ def close_task():
                 return redirect('/index')
             return render_template('close_task.html',
                                    title='close_task',
-                                   form=form)
+                                   form=form,
+                                   valid=session['status'])
     return redirect('/index')
 
 
@@ -195,23 +218,6 @@ def add_regex():
                 return redirect('/index')
             return render_template('add_regex.html',
                                    title='add_regex',
-                                   form=form)
-    return redirect('/index')
-
-
-@app.route('/create_regex', methods=['GET', 'POST'])
-def add_regex():
-    if session['id'] is not None:
-        if session['status'] == 'parent':
-            conn, c = connect_db()
-            sql = ("SELECT id_child, login FROM children where id_parent = '{}'".format(session['id']))
-            c.execute(sql)
-            form = addregexform()
-            form.childrens.choices = c.fetchall()
-            if form.validate_on_submit():
-                create_regex(form.childrens.data,  form.description.data)
-                return redirect('/index')
-            return render_template('add_regex.html',
-                                   title='add_regex',
-                                   form=form)
+                                   form=form,
+                                   valid=session['status'])
     return redirect('/index')

@@ -15,7 +15,8 @@ def create_table_parents():
     conn, c = connect_db()
     c.execute('''create table parents (id_parent varchar(255), id_child varchar(255), login varchar(255),
         password varchar(255), name varchar(255), surname varchar(255), patronymic varchar(255),
-        sex varchar(255), number_parents int, balance_needs int, balance_close int, balance_open int, balance_parent int, tel_number int )''')
+        sex varchar(255), number_parents int, balance_needs int, balance_close int, balance_open int, 
+        balance_parent int, tel_number int )''')
 
     conn.commit()
     conn.close()
@@ -26,10 +27,11 @@ def create_table_children():
     conn, c = connect_db()
     c.execute('''create table children (id_child varchar(255), id_parent varchar(255), login varchar(255),
         password varchar(255), name varchar(255), surname varchar(255), patronymic varchar(255),
-        sex varchar(255), number_close int, number_open int, number_needs int)''')
+        sex varchar(255), balance_needs int, balance_close int, balance_open int, 
+        number_close int, number_open int, number_needs int)''')
     conn.commit()
     conn.close()
-#create_table_children()
+create_table_children()
 
 
 def create_table_tasks():
@@ -47,4 +49,4 @@ def create_table_regex():
         description varchar(255))''')
     conn.commit()
     conn.close()
-create_table_regex()
+#create_table_regex()
