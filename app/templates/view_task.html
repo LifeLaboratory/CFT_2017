@@ -1,0 +1,21 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<center>
+<div class="main">
+<h1>View task</h1>
+
+    #фамилия имя отество
+    <h>{% for i in fio%}
+        {{i}}
+        {% endfor %}</h>
+
+    # описание цена статус
+    <h>{% for i in tasks%}
+        {{i[3]}} {{i[4]}} {{i[5]}}
+        <br><br>
+        {% endfor %}</h>
+</div>
+</center>
+{% endblock %}

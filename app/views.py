@@ -69,9 +69,8 @@ def login():
             return "Wrong password or login"
         else:
             session['login'] = form.login.data
-            session['id'] = data['id'][0]
+            session['id'] = data['id']
             session['status'] = data['status']
-            #print(session['id'], ' -> ', session['login'],' -> ', session['status'])
             return redirect('/index')
     return render_template('login.html',
                            title='Sign In',
@@ -101,7 +100,7 @@ def add_task():
             c.execute(sql)
             form = Addtaskform()
             form.childrens.choices = c.fetchall()
-            #print(form.data)
+            print(form.data)
             if form.validate_on_submit():
                 uid_parent = session['id_parent']
                 create_task(uid_parent, form.childrens.data,  form.description.data, form.coin.data)
@@ -120,19 +119,25 @@ def view_task():
             conn, c = connect_db()
             sql = ("SELECT children.name, children.surname, children.patronymic, tasks.description, tasks.coin,"
                    " tasks.status  FROM tasks, children where tasks.id_parent = '{}' and children.id_parent = '{}'"
-                   "".format(session['id'], session['id']))
-            #print(sql)
+                   "".format(session['id'][0], session['id'][0]))
+            print(sql)
             c.execute(sql)
             result = c.fetchall()
-            #print(result)
+            print(result)
+            return render_template('view_task.html', title='view_task',
+                                       status=session['status'], tasks=result)
         elif session['status'] == 'children':
             conn, c = connect_db()
-            sql = ("SELECT * FROM tasks where id_child = '{}'".format(session['id']))
+            sql = ("SELECT * FROM tasks where id_child = '{}'".format(session['id'][0]))
             c.execute(sql)
             result = c.fetchall()
+
+            sql = ("SELECT name, surname, patronymic FROM children where id_child = '{}'".format(session['id'][0]))
+            c.execute(sql)
+            resul = c.fetchall()
     #   Добавить рендеринг результата
-    #return render_template('view_task.html', title='view_task',
-    #                       status=session['status'], tasks=result)
+            return render_template('view_task.html', title='view_task',
+                               status=session['status'], tasks=result, fio=resul[0])
     return redirect('/index')
 
 
@@ -141,16 +146,16 @@ def close_task():
     if session['id'] is not None:
         if session['status'] == 'parent':
             conn, c = connect_db()
-            sql = ("SELECT id_task, description FROM tasks "
-                   "where id_parent = '{}' and status = '1'".format(session['id']))
+            sql = ("SELECT id_task, description FROM tasks where id_parent = '{}' and status = '1'".format(session['id']))
             c.execute(sql)
             #print(c.fetchall())
             form = closetaskform()
             form.tasks.choices = c.fetchall()
-            #print(form.data)
+            print(form.data)
             if form.validate_on_submit():
                 uid_parent = session['id_parent']
                 create_task(uid_parent, form.childrens.data, form.description.data, form.coin.data)
+                print(1)
                 return redirect('/index')
             return render_template('close_task.html',
                                    title='close_task',
@@ -161,11 +166,11 @@ def close_task():
             c.execute(sql)
             form = closetaskform()
             form.tasks.choices = c.fetchall()
-            #print(form.data)
+            print(form.data)
             if form.validate_on_submit():
-                uid_parent = session['id_parent'][0]
+                uid_parent = session['id_parent']
                 create_task(uid_parent, form.childrens.data, form.description.data, form.coin.data)
-                #print(1)
+                print(1)
                 return redirect('/index')
             return render_template('close_task.html',
                                    title='close_task',
