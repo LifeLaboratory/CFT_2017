@@ -1,4 +1,14 @@
 import uuid
+
+#for other os
+#from app.api.database.connect_db import connect_db
+
+#for linux
+import sys
+import os
+directory_user_cabinet = os.getcwd()
+print (directory_user_cabinet)
+sys.path.insert(0, directory_user_cabinet)
 from connect_db import connect_db
 
 

@@ -6,13 +6,20 @@ from app.forms import LoginForm
 from app.forms import Regform
 from app.forms import AddchildForm
 from flask import make_response, session
+
+
+#for other os
+#from app.api.database.create_parent import create_parent
+
+#for linux
+import sys
+import os
+#directory_user_cabinet = os.getcwd()
+directory_user_cabinet="/home/raldenprog/CFT/the_best_service/hackaton_cft/app/api/database"
+sys.path.insert(0, directory_user_cabinet)
 from create_parent import create_parent
 from create_children import create_child
 from login_manager import login_in
-import uuid
-import sqlite3
-
-
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index')
