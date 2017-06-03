@@ -119,13 +119,14 @@ def view_task():
             conn, c = connect_db()
             sql = ("SELECT children.name, children.surname, children.patronymic, tasks.description, tasks.coin,"
                    " tasks.status  FROM tasks, children where tasks.id_parent = '{}' and children.id_parent = '{}'"
-                   "".format(session['id'], session['id']))
+                   "".format(session['id'][0], session['id'][0]))
+            print(sql)
             c.execute(sql)
             result = c.fetchall()
             print(result)
         elif session['status'] == 'children':
             conn, c = connect_db()
-            sql = ("SELECT * FROM tasks where id_children = '{}'".format(session['id']))
+            sql = ("SELECT * FROM tasks where id_child = '{}'".format(session['id'][0]))
             c.execute(sql)
             result = c.fetchall()
     #   Добавить рендеринг результата
@@ -155,7 +156,7 @@ def close_task():
                                    form=form)
         elif session['status'] == 'children':
             conn, c = connect_db()
-            sql = ("SELECT * FROM tasks where id_children = '{}' and status = '0'".format(session['id']))
+            sql = ("SELECT * FROM tasks where id_child = '{}' and status = '0'".format(session['id']))
             c.execute(sql)
             form = closetaskform()
             form.tasks.choices = c.fetchall()
@@ -169,5 +170,3 @@ def close_task():
                                    title='close_task',
                                    form=form)
     return redirect('/index')
-
-
