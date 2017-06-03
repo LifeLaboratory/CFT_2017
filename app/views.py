@@ -117,9 +117,12 @@ def view_task():
     if session['id'] is not None:
         if session['status'] == 'parent':
             conn, c = connect_db()
-            sql = ("SELECT * FROM tasks where id_parent = '{}'".format(session['id']))
+            sql = ("SELECT children.name, children.surname, children.patronymic, tasks.description, tasks.coin,"
+                   " tasks.status  FROM tasks, children where tasks.id_parent = '{}' and children.id_parent = '{}'"
+                   "".format(session['id'], session['id']))
             c.execute(sql)
             result = c.fetchall()
+            print(result)
         elif session['status'] == 'children':
             conn, c = connect_db()
             sql = ("SELECT * FROM tasks where id_children = '{}'".format(session['id']))
@@ -166,3 +169,5 @@ def close_task():
                                    title='close_task',
                                    form=form)
     return redirect('/index')
+
+
