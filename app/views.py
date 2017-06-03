@@ -82,6 +82,7 @@ def add_child():
     form = AddchildForm()
     if form.validate_on_submit():
         uid_parent = session['id']
+        print (session["id"])
         create_child(uid_parent, form.login.data, form.password.data, form.name.data,
                       form.surname.data, form.patronymic.data, form.sex.data, form.number_close.data,
                       form.number_open.data, form.number_needs.data)
@@ -119,7 +120,7 @@ def view_task():
             conn, c = connect_db()
             sql = ("SELECT children.name, children.surname, children.patronymic, tasks.description, tasks.coin,"
                    " tasks.status  FROM tasks, children where tasks.id_parent = '{}' and children.id_parent = '{}'"
-                   "".format(session['id'][0], session['id'][0]))
+                   "".format(session['id'], session['id']))
             print(sql)
             c.execute(sql)
             result = c.fetchall()
@@ -128,13 +129,13 @@ def view_task():
                                        status=session['status'], tasks=result)
         elif session['status'] == 'children':
             conn, c = connect_db()
-            sql = ("SELECT * FROM tasks where id_child = '{}'".format(session['id'][0]))
+            sql = ("SELECT * FROM tasks where id_child = '{}'".format(session['id']))
             c.execute(sql)
             result = c.fetchall()
-
-            sql = ("SELECT name, surname, patronymic FROM children where id_child = '{}'".format(session['id'][0]))
+            sql = ("SELECT name, surname, patronymic FROM children where id_child = '{}'".format(session['id']))
             c.execute(sql)
             resul = c.fetchall()
+            print (resul)
     #   Добавить рендеринг результата
             return render_template('view_task.html', title='view_task',
                                status=session['status'], tasks=result, fio=resul[0])
