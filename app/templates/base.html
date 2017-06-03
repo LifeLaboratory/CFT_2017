@@ -1,7 +1,7 @@
 <html>
   <head>
     {% if title %}
-    <title>{{title}} - microblog</title>
+    <title>{{title}}</title>
     {% else %}
     <title>FMR</title>
     {% endif %}
@@ -15,7 +15,9 @@
     <a href="/registration">Registration</a>
     <a href="/login">Login</a>
     <a href="/add_child">Add_child</a>
-    </center></div></h2>
+    <a href="/view_task">View_task</a>
+
+  </center></div></h2>
     {% block content %}{% endblock %}
   </body>
 </html>
