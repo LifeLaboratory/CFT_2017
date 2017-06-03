@@ -126,7 +126,7 @@ def view_task():
             result = c.fetchall()
             print(result)
             return render_template('view_task.html', title='view_task',
-                                       status=session['status'], tasks=result)
+                                       status=session['status'], tasksp=result)
         elif session['status'] == 'children':
             conn, c = connect_db()
             sql = ("SELECT * FROM tasks where id_child = '{}'".format(session['id']))
@@ -135,7 +135,6 @@ def view_task():
             sql = ("SELECT name, surname, patronymic FROM children where id_child = '{}'".format(session['id']))
             c.execute(sql)
             resul = c.fetchall()
-            print (resul)
     #   Добавить рендеринг результата
             return render_template('view_task.html', title='view_task',
                                status=session['status'], tasks=result, fio=resul[0])
