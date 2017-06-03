@@ -1,0 +1,73 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<center>
+<div class="main">
+<h1>Registration</h1>
+
+<form action="" method="post" name="login">
+    {{form.hidden_tag()}}
+    <p>
+        <h3>Please enter your login:</h3><br>
+        {{form.login(size=40)}}<br>
+
+        {% for error in form.errors.login %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        <h3>Please enter your password:</h3><br>
+        {{form.password(size=40)}}<br>
+        {% for error in form.errors.password %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        <h3>Please enter your Repeat password:</h3><br>
+        {{form.PasswordRepeat(size=40)}}<br>
+        {% for error in form.errors.PasswordRepeat %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        <h3>Please enter your name:</h3><br>
+        {{form.name(size=40)}}<br>
+        {% for error in form.errors.name %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        <h3>Please enter your surname:</h3><br>
+        {{form.surname(size=40)}}<br>
+        {% for error in form.errors.surname %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        <h3>Please enter your patronymic:</h3><br>
+        {{form.patronymic(size=40)}}<br>
+        {% for error in form.errors.patronymic %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        <h3>Please enter your sex:</h3><br>
+        {{form.sex(size=40)}}<br>
+        {% for error in form.errors.sex %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        <h3>Please enter your number_parents:</h3><br>
+        {{form.number_parents(size=40)}}<br>
+        {% for error in form.errors.number_parents %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+
+        <h3>Please enter your tel_number:</h3><br>
+        {{form.tel_number(size=40)}}<br>
+        {% for error in form.errors.tel_number %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+    </p>
+    <p><input type="submit" value="Sign In"></p>
+</form>
+</div>
+</center>
+{% endblock %}

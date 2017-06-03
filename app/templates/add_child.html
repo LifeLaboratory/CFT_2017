@@ -1,0 +1,81 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<center>
+<div class="main">
+<h1>Add child</h1>
+
+<form action="" method="post" name="login">
+    {{form.hidden_tag()}}
+    <p>
+        <h3>Please enter child login:</h3><br>
+        {{form.login(size=40)}}<br>
+
+        {% for error in form.errors.login %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        <h3>Please enter child password:</h3><br>
+        {{form.password(size=40)}}<br>
+        {% for error in form.errors.password %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        <h3>Please enter child Repeat password:</h3><br>
+        {{form.PasswordRepeat(size=40)}}<br>
+        {% for error in form.errors.PasswordRepeat %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        <h3>Please enter child name:</h3><br>
+        {{form.name(size=40)}}<br>
+        {% for error in form.errors.name %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        <h3>Please enter child surname:</h3><br>
+        {{form.surname(size=40)}}<br>
+        {% for error in form.errors.surname %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        <h3>Please enter child patronymic:</h3><br>
+        {{form.patronymic(size=40)}}<br>
+        {% for error in form.errors.patronymic %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+
+        <h3>Please enter child sex:</h3><br>
+        {{form.sex(size=40)}}<br>
+        {% for error in form.errors.sex %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        <h3>Please enter child number_close:</h3><br>
+        {{form.number_close(size=40)}}<br>
+        {% for error in form.errors.number_close %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        <h3>Please enter child number_needs:</h3><br>
+        {{form.number_needs(size=40)}}<br>
+        {% for error in form.errors.number_needs %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        <h3>Please enter child number_open:</h3><br>
+        {{form.number_open(size=40)}}<br>
+        {% for error in form.errors.number_open %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+
+
+    </p>
+    <p><input type="submit" value="Sign In"></p>
+</form>
+</div>
+</center>
+{% endblock %}
