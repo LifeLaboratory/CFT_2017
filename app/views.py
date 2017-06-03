@@ -126,13 +126,3 @@ def view_task():
     return render_template('view_task.html', title='view_task',
                            status=session['status'], tasks=result)
 
-    #return render_template('add_task.html',
-    #0                      title='add_task')
-
-'''
-@app.route('/add_task', methods = ['GET', 'POST'])
-def add_task():
-    form = AddchildForm()
-    if form.validate_on_submit():
-
-'''
