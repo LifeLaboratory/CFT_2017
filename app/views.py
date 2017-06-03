@@ -33,57 +33,61 @@ from login_manager import login_in
 @app.route('/', methods=['GET'])
 @app.route('/index')
 def index():
-    if session['id'] is not None:
-        if session['status'] == 'parent':
-            balance_p = balance_parent(session['id'])
-            conn, c = connect_db()
-            sql = ("SELECT id_child, name, surname, patronymic FROM children where id_parent = '{}'".format(session['id']))
-            c.execute(sql)
-            balance_c = {child[1]+' '+child[2]+' '+child[3]: balance_child(child[0]) for child in c.fetchall()}
-            print(session["id"])
-            return render_template("index_parent.html",
-                                   len_balance_c=len(balance_c)+1,
-                                   balance_p=balance_p,
-                                   balance_c=balance_c,
-                                   valid = session['status'])
-        elif session['status'] == 'children':
-            conn, c = connect_db()
-            sql = ("SELECT id_child, name, surname, patronymic FROM children where id_child = '{}'".format(session['id']))
-            c.execute(sql)
-            balance_c = {child[1]+' '+child[2]+' '+child[3]: balance_child(child[0]) for child in c.fetchall()}
-            return render_template("index_children.html",
-                                len_balance_c=len(balance_c)+1,
-                                   balance_c=balance_c,
-                                   valid=session['status'])
-    return redirect('/index')
+    try:
+        if session['id'] is not None:
+            if session['status'] == 'parent':
+                balance_p = balance_parent(session['id'])
+                conn, c = connect_db()
+                sql = ("SELECT id_child, name, surname, patronymic FROM children where id_parent = '{}'".format(session['id']))
+                c.execute(sql)
+                balance_c = {child[1]+' '+child[2]+' '+child[3]: balance_child(child[0]) for child in c.fetchall()}
+                print(session["id"])
+                return render_template("index_parent.html",
+                                       len_balance_c=len(balance_c)+1,
+                                       balance_p=balance_p,
+                                       balance_c=balance_c,
+                                       valid = session['status'])
+            elif session['status'] == 'children':
+                conn, c = connect_db()
+                sql = ("SELECT id_child, name, surname, patronymic FROM children where id_child = '{}'".format(session['id']))
+                c.execute(sql)
+                balance_c = {child[1]+' '+child[2]+' '+child[3]: balance_child(child[0]) for child in c.fetchall()}
+                return render_template("index_children.html",
+                                    len_balance_c=len(balance_c)+1,
+                                       balance_c=balance_c,
+                                       valid=session['status'])
+    except:
+        return render_template("index.html")
+
 
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
-    if session['id'] is not None:
-        if session['status'] == 'parent':
-            form = Regform()
-            if form.validate_on_submit():
-                if form.password.data == form.PasswordRepeat.data:
-                    answer_check = check_login(form.login.data)
-                    if answer_check != 0:
-                        return answer_check
-                    else:
-                        balance_needs = 0
-                        balance_close = 0
-                        balance_open = 0
-                        balance_parent = 0
-                        create_parent(form.login.data, form.password.data, form.name.data,
-                                    form.surname.data, form.patronymic.data, form.sex.data, form.number_parents.data,
-                                      balance_needs, balance_close, balance_open,
-                                      balance_parent, form.tel_number.data,)
-                        return redirect('/index')
+    try:
+        if session['id'] is None:
+            return redirect('/index')
+    except:
+        form = Regform()
+        if form.validate_on_submit():
+            if form.password.data == form.PasswordRepeat.data:
+                answer_check = check_login(form.login.data)
+                if answer_check != 0:
+                    return answer_check
                 else:
-                    return "Passwords do not match"
-            return render_template('registration.html',
-                title='Sign In',
-                form=form,
-                                   valid=session['status'])
-    return redirect('/index')
+                    balance_needs = 0
+                    balance_close = 0
+                    balance_open = 0
+                    balance_parent = 0
+                    create_parent(form.login.data, form.password.data, form.name.data,
+                                form.surname.data, form.patronymic.data, form.sex.data, form.number_parents.data,
+                                  balance_needs, balance_close, balance_open,
+                                  balance_parent, form.tel_number.data,)
+                    return redirect('/index')
+            else:
+                return "Passwords do not match"
+        return render_template('registration.html',
+            title='Sign In',
+            form=form)
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -100,8 +104,7 @@ def login():
             return redirect('/index')
     return render_template('login.html',
                            title='Sign In',
-                           form=form,
-                                   valid=session['status'])
+                           form=form)
 
 
 @app.route('/add_child', methods=['GET', 'POST'])
@@ -236,10 +239,13 @@ def add_score():
             sql = ("SELECT id_child, name, surname, patronymic "
                    "FROM children where id_parent = '{}'".format(session['id']))
             c.execute(sql)
-
+            l = {}
             for child in c.fetchall():
                 _score, score = average_score(child[1] + ' ' + child[2] + ' ' + child[3])
-                print(_score, ' -> ', score)
+                if _score is not None:
+                    l['child'] = _score
+
+                    print(l)
             return render_template('score.html',
                                    title='add_regex',
                                    valid=session['status'])
@@ -249,4 +255,6 @@ def add_score():
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     session.pop('id', None)
+    session.pop('status', None)
+    session.pop('login', None)
     return render_template('index.html')

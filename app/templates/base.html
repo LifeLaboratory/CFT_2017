@@ -12,12 +12,20 @@
   <div class="ot">
   <center>
     <h2>
-    <a href="/index">Home</a>
-    <a href="/registration">Registration</a>
-    <a href="/login">Login</a>
-    <a href="/add_child">Add_child</a>
-    <a href="/view_task">View_task</a>
-
+      {%if valid == 'parent'%}
+    <a href="/index">Домашняя страница</a>
+    <a href="/add_child">Добавить ребенка</a>
+    <a href="/view_task">Посмотреть задания</a>
+    <a href="/logout">Выход</a>
+      {% elif valid == 'children'%}
+    <a href="/index">Домашняя страница</a>
+    <a href="/view_task">Посмотреть задания</a>
+    <a href="/logout">Выход</a>
+      {% else %}
+    <a href="/index">Домашняя страница</a>
+    <a href="/registration">Регистрация</a>
+    <a href="/login">Авторизация</a>
+      {% endif%}
   </center></div></h2>
     {% block content %}{% endblock %}
   </body>
