@@ -79,17 +79,20 @@ def login():
 
 @app.route('/add_child', methods=['GET', 'POST'])
 def add_child():
-    form = AddchildForm()
-    if form.validate_on_submit():
-        uid_parent = session['id']
-        print (session["id"])
-        create_child(uid_parent, form.login.data, form.password.data, form.name.data,
-                      form.surname.data, form.patronymic.data, form.sex.data, form.number_close.data,
-                      form.number_open.data, form.number_needs.data)
-        return redirect('/index')
-    return render_template('add_child.html',
-                           title='Sign In',
-                           form=form)
+    if session['id'] is not None:
+        if session['status'] == 'parent':
+            form = AddchildForm()
+            if form.validate_on_submit():
+                uid_parent = session['id']
+                print (session["id"])
+                create_child(uid_parent, form.login.data, form.password.data, form.name.data,
+                              form.surname.data, form.patronymic.data, form.sex.data, form.number_close.data,
+                              form.number_open.data, form.number_needs.data)
+                return redirect('/index')
+            return render_template('add_child.html',
+                                   title='Sign In',
+                                   form=form)
+    return redirect('/index')
 
 
 @app.route('/create_task', methods=['GET', 'POST'])
@@ -174,6 +177,24 @@ def close_task():
                 return redirect('/index')
             return render_template('close_task.html',
                                    title='close_task',
+                                   form=form)
+    return redirect('/index')
+
+
+@app.route('/create_regex', methods=['GET', 'POST'])
+def add_regex():
+    if session['id'] is not None:
+        if session['status'] == 'parent':
+            conn, c = connect_db()
+            sql = ("SELECT id_child, login FROM children where id_parent = '{}'".format(session['id']))
+            c.execute(sql)
+            form = addregexform()
+            form.childrens.choices = c.fetchall()
+            if form.validate_on_submit():
+                create_regex(form.childrens.data,  form.description.data)
+                return redirect('/index')
+            return render_template('add_regex.html',
+                                   title='add_regex',
                                    form=form)
     return redirect('/index')
 
