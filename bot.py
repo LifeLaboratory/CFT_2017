@@ -6,12 +6,29 @@ from create_task import _task
 from done_task import not_executed, executed, done, _all
 
 bot = telebot.TeleBot('334091792:AAExM2izWSclqPoHZ109hrsZK-3cfUAVxzs')
-try:
 
+try:
     @bot.message_handler(commands=['start'])
     def start(message):
-        welcome = "Hi! I'm a Finance Motivation Children bot!"
+        welcome = """Hi! I'm a Finance Motivation Children bot!
+Type /help to get a more info"""
         bot.send_message(message.chat.id, welcome)
+
+    @bot.message_handler(commands=['help'])
+    def help(message):
+        helps = '''
+Commands list:
+parent_bal - balance in parents account
+child_bal - balance in children account
+all_t - views all task
+not_exec_t - views not executable task
+exec_t - views executable task
+check_t - check and display the performance of the task (commands <task>)
+sent_t - send moneys to children in needs score invoices (commands <coins>)
+sent_m - send mulct for open invoices children (commands <coins>)
+sent_bon - send bonus in open invoices children (commands <coins>)
+        '''
+        bot.send_message(message.chat.id, helps)
 
     @bot.message_handler(commands=['parent_bal'])
     def parents_balance(message):
@@ -120,7 +137,6 @@ try:
             bot.send_message(message.chat.id, messages)
         except:
                 bot.send_message(message.chat.id, "Somewhere wrong!")
-
 except:
         bot.send_message(message.chat.id, "Somewhere wrong!")
 
