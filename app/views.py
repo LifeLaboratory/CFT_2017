@@ -2,7 +2,7 @@ from app import app
 from flask import Flask, request, redirect, url_for
 from flask import render_template, flash, redirect
 from app.check_parents_and_children import check_login
-from app.forms import LoginForm
+from app.forms import LoginForm, addregexform
 from app.forms import Regform, closetaskform
 from app.forms import AddchildForm, Addtaskform
 from flask import make_response, session
@@ -14,7 +14,7 @@ from app.api.database.create_parent import create_parent
 from app.api.database.create_task import create_task
 from app.api.database.create_children import create_child
 from app.api.database.login_manager import login_in
-
+from app.api.database.create_regex import create_regex
 
 # for linux
 """
@@ -169,5 +169,23 @@ def close_task():
                 return redirect('/index')
             return render_template('close_task.html',
                                    title='close_task',
+                                   form=form)
+    return redirect('/index')
+
+
+@app.route('/create_regex', methods=['GET', 'POST'])
+def add_regex():
+    if session['id'] is not None:
+        if session['status'] == 'parent':
+            conn, c = connect_db()
+            sql = ("SELECT id_child, login FROM children where id_parent = '{}'".format(session['id']))
+            c.execute(sql)
+            form = addregexform()
+            form.childrens.choices = c.fetchall()
+            if form.validate_on_submit():
+                create_regex(form.childrens.data,  form.description.data)
+                return redirect('/index')
+            return render_template('add_regex.html',
+                                   title='add_regex',
                                    form=form)
     return redirect('/index')

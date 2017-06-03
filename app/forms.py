@@ -54,3 +54,6 @@ class Addtaskform(FlaskForm):
 class closetaskform(FlaskForm):
     tasks = SelectField('tasks')
 
+class addregexform(FlaskForm):
+    childrens = SelectField('children')
+    description = StringField('description', [validators.Length(min=10, max=255)])

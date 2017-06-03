@@ -19,7 +19,7 @@ def create_table_parents():
 
     conn.commit()
     conn.close()
-create_table_parents()
+#create_table_parents()
 
 
 def create_table_children():
@@ -29,7 +29,7 @@ def create_table_children():
         sex varchar(255), number_close int, number_open int, number_needs int)''')
     conn.commit()
     conn.close()
-create_table_children()
+#create_table_children()
 
 
 def create_table_tasks():
@@ -38,4 +38,13 @@ def create_table_tasks():
         description varchar(255), coin int, status int)''')
     conn.commit()
     conn.close()
-create_table_tasks()
+#create_table_tasks()
+
+
+def create_table_regex():
+    conn, c = connect_db()
+    c.execute('''create table regex (id_regex varchar(255), id_child varchar(255),
+        description varchar(255))''')
+    conn.commit()
+    conn.close()
+create_table_regex()
