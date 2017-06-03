@@ -1,0 +1,31 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<center>
+
+<form action="" method="post" name="registration">
+    Ваш баланс={{balance_p}} <p></p>
+    Ваши дети:<p></p>
+                {% for i in balance_c %}
+                {{i}}
+                    {%for j in range(len_balance_c)%}
+                        {{balance_c[i][j]}}
+                    {% endfor %}
+                <p></p>
+                {% endfor %}
+    <p></p>
+    <form>
+        <input type="button" value="Подробности о своем счете" onClick='location.href="/login"'>
+        <input type="button" value="Подробности о счетах детей" onClick='location.href="/login"'>
+        <input type="button" value="Перевести деньги" onClick='location.href="/login"'>
+        <input type="button" value="Оштрафовать" onClick='location.href="/login"'>
+        <input type="button" value="Задачи" onClick='location.href="/view_task"'>
+
+
+    </form>
+
+
+</form>
+</center>
+{% endblock %}
