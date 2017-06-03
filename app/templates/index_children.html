@@ -1,10 +1,40 @@
-<!-- extend base layout -->
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Вход </title>
 
-{% block content %}
-<center>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-<form action="" method="post" name="registration">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="/index" class="navbar-brand">Главная</a>
+            </div>
+
+            <div>
+                <ul class="nav navbar-nav">
+                    <li><a href="/#">Подробности о своем счете</a></li>
+                    <li><a href="/view_task">Задачи</a></li>
+                    <li><a href="/#">Запрос денег</a></li>
+                    <li><a href="/logout">Выйти</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+<div class="container-fluid">
                 {% for i in balance_c %}
                 {{i}}
                     {%for j in range(len_balance_c)%}
@@ -12,15 +42,6 @@
                     {% endfor %}
                 <p></p>
                 {% endfor %}
-    <p></p>
-    <form>
-        <input type="button" value="Запросить денег" onClick='location.href="/login"'>
-        <input type="button" value="Задачи" onClick='location.href="/view_task"'>
 
-
-    </form>
-
-
-</form>
-</center>
-{% endblock %}
+</div>
+</body>

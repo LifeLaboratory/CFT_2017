@@ -1,71 +1,98 @@
-<!-- extend base layout -->
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Вход </title>
 
-{% block content %}
-<center>
-<h1>Registration</h1>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="/index" class="navbar-brand">Главная</a>
+            </div>
+
+            <div>
+                <ul class="nav navbar-nav">
+                    <li  class="active"><a href="/registration">Регистрация</a</li>
+                    <li><a href="/login">Авторизация</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<div class="container-fluid">
 <form action="" method="post" name="registration">
     {{form.hidden_tag()}}
     <p>
-        <h3>Please enter your login:</h3><br>
-        {{form.login(size=40)}}<br>
-
+        <h3>login: </h3>
+         {{form.login(size=40)}}
         {% for error in form.errors.login %}
         <span style="color: red;">[{{error}}]</span>
-        {% endfor %}<br>
+        {% endfor %}
 
-        <h3>Please enter your password:</h3><br>
-        {{form.password(size=40)}}<br>
+
+        <h3>password:</h3>
+        {{form.password(size=40)}}
         {% for error in form.errors.password %}
         <span style="color: red;">[{{error}}]</span>
-        {% endfor %}<br>
+        {% endfor %}
 
-        <h3>Please enter your Repeat password:</h3><br>
-        {{form.PasswordRepeat(size=40)}}<br>
+        <h3>repeat password:</h3>
+        {{form.PasswordRepeat(size=40)}}
         {% for error in form.errors.PasswordRepeat %}
         <span style="color: red;">[{{error}}]</span>
-        {% endfor %}<br>
+        {% endfor %}
 
-        <h3>Please enter your name:</h3><br>
-        {{form.name(size=40)}}<br>
+        <h3>name:</h3>
+        {{form.name(size=40)}}
         {% for error in form.errors.name %}
         <span style="color: red;">[{{error}}]</span>
-        {% endfor %}<br>
+        {% endfor %}
 
-        <h3>Please enter your surname:</h3><br>
-        {{form.surname(size=40)}}<br>
+        <h3>surname:</h3>
+        {{form.surname(size=40)}}
         {% for error in form.errors.surname %}
         <span style="color: red;">[{{error}}]</span>
-        {% endfor %}<br>
+        {% endfor %}
 
-        <h3>Please enter your patronymic:</h3><br>
-        {{form.patronymic(size=40)}}<br>
+        <h3>patronymic:</h3>
+        {{form.patronymic(size=40)}}
         {% for error in form.errors.patronymic %}
         <span style="color: red;">[{{error}}]</span>
-        {% endfor %}<br>
+        {% endfor %}
 
-        <h3>Please enter your sex:</h3><br>
-        {{form.sex(size=40)}}<br>
+        <h3>sex:</h3>
+        {{form.sex(size=40)}}
         {% for error in form.errors.sex %}
         <span style="color: red;">[{{error}}]</span>
-        {% endfor %}<br>
+        {% endfor %}
 
-        <h3>Please enter your number_parents:</h3><br>
-        {{form.number_parents(size=40)}}<br>
+        <h3>Your bank card number:</h3>
+        {{form.number_parents(size=40)}}
         {% for error in form.errors.number_parents %}
         <span style="color: red;">[{{error}}]</span>
-        {% endfor %}<br>
+        {% endfor %}
 
 
-        <h3>Please enter your tel_number:</h3><br>
-        {{form.tel_number(size=40)}}<br>
+        <h3>your tel_number:</h3>
+        {{form.tel_number(size=40)}}
         {% for error in form.errors.tel_number %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
     </p>
-    <p><input type="submit" value="Registr"></p>
+    <p><input type="submit" value="Registration"></p>
 </form>
-</center>
-{% endblock %}
+

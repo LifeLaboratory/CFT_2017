@@ -24,8 +24,9 @@
 
             <div>
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/close_task">Закрыть задание</a></li>
-                    <li><a href="/logout">Выйти</a></li>
+                    <li class="active"><a href="/view_task">Просмотр заданий</a></li>
+                    <li><a href="/close_task">Закрыть существующее задание</a></li>
+                    <li><a href="/logout">Выход</a></li>
                 </ul>
             </div>
         </div>
@@ -33,17 +34,23 @@
 
 
 <div class="container-fluid">
-<form action="" method="post" name="login">
-    {{form.hidden_tag()}}
-    <p>
-        {{form.tasks(size=5)}}<br>
-        {% for error in form.errors.tasks %}
-        <span style="color: red;">[{{error}}]</span>
-        {% endfor %}<br>
+    <!-- фамилия имя отество когда заходит ребенок-->
+    <h>{% for i in fio%}
+        {{i}}
+        {% endfor %}</h>
+
+    <!-- описание цена статус-->
+    <h>{% for i in tasks%}
+        {{i[3]}} {{i[4]}} {{i[5]}}
+        <br><br>
+        {% endfor %}</h>
 
 
-    </p>
-    <p><input type="submit" value="Close"></p>
-</form>
+     <!-- фамилия имя отество описание цена статус когда заходит родитель-->
+    <h>{% for i in tasksp%}
+      {{i[0]}} {{i[1]}} {{i[2]}} {{i[3]}} {{i[4]}} {{i[5]}}
+        <br><br>
+        {% endfor %}</h>
+
 </div>
 </body>

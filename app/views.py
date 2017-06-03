@@ -156,7 +156,7 @@ def view_task():
 
             c.execute(sql)
             result = c.fetchall()
-            return render_template('view_task.html', title='view_task',
+            return render_template('view_task_parent.html', title='view_task',
                                         valid=session['status'],
                                         tasksp=result)
         elif session['status'] == 'children':
@@ -168,7 +168,7 @@ def view_task():
             c.execute(sql)
             resul = c.fetchall()
     #   Добавить рендеринг результата
-            return render_template('view_task.html', title='view_task',
+            return render_template('view_task_child.html', title='view_task',
                                    valid=session['status'], tasks=result, fio=resul[0])
     return redirect('/index')
 
