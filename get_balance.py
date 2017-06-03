@@ -1,24 +1,24 @@
 import sqlite3
 
-login_child = {"login_child": 'Max1',
-               }
 def balance_child(login):
     con = sqlite3.connect("database.db")
     c = con.cursor()
-    sql = ("SELECT balance_needs, balance_open FROM children where login = '{}'".format(login))
-    c.execute(sql)
+    c.execute("SELECT balance_needs, balance_open, balance_close FROM parents where login = '{}'".format(login))
     result = c.fetchall()
-    return (result)
+    print(result)
+    for i in result[0]:
+        needs = i
+    close = result[0][2]
+    _open = result[0][1]
+    return ("Needs:{0}, Close{1}, Open:{2}".format(needs, close, _open))
 
-login_parent = {"login_child": 'Sveta1',
-                }
 def balance_parent(login):
     con = sqlite3.connect("database.db")
     c = con.cursor()
-    sql = ("SELECT balance_needs, balance_close, balance_open FROM parents where login = '{}'".format(login))
-    c.execute(sql)
+    c.execute("SELECT balance_parent FROM parents where login = '{}'".format(login))
     result = c.fetchall()
-    return (result)
-
-print (balance_child(login_child["login_child"]))
-print (balance_parent(login_parent["login_child"]))
+    for i in result[0]:
+        result = i
+    return(result)
+print (balance_child("Sveta1"))
+#print (balance_parent("Sveta1"))
