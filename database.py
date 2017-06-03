@@ -19,11 +19,10 @@ def create_table_children():
     c = conn.cursor()
     c.execute('''create table children (id_child varchar(255), id_parent varchar(255), login varchar(255), 
     password varchar(255), name varchar(255), surname varchar(255), patronymic varchar(255), 
-    sex varchar(255), number_close int, number_open int, number_needs int, balance_needs int, 
-    balance_open )''')
+    sex varchar(255), number_close int, number_open int, number_needs int)''')
     conn.commit()
     conn.close()
-#reate_table_children()
+#create_table_children()
 
 def create_table_tasks():
     conn=sqlite3.connect('database.db')
@@ -33,6 +32,8 @@ def create_table_tasks():
     conn.commit()
     conn.close()
 #create_table_tasks()
+
+
 
 def create_parent():
     data = {"login": "Sveta1",
@@ -70,13 +71,13 @@ def create_parent():
                       data["name_child"], data["surname_child"], data[("patronymic_child")],
                       data["sex_child"], data["number_close"], data["number_open"],
                       data["number_needs"])]
-        c.executemany('INSERT INTO children VALUES (?,?,?,?,?,?,?,?,?,?,?,0,0)', purchases)
+        c.executemany('INSERT INTO children VALUES (?,?,?,?,?,?,?,?,?,?,?)', purchases)
         conn.commit()
         conn.close()
 #create_parent()
 
 def create_task():
-    data = {"id_parent": "123c81b7-b9aa-44d3-bb36-dd7f49d248b0",
+    data = {"id_parent": "a38031fb-058a-428a-9dba-3efbdac070a9",
             "description": 'Kill heretics',
             "coin": 100500,
             }
