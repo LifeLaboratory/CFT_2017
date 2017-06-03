@@ -35,18 +35,18 @@ def index():
         if session['status'] == 'parent':
             balance_p = balance_parent(session['id'])
             conn, c = connect_db()
-            sql = ("SELECT id_child FROM children where id_parent = '{}'".format(session['id']))
+            sql = ("SELECT id_child, name, surname, patronymic FROM children where id_parent = '{}'".format(session['id']))
             c.execute(sql)
-            balance_c = {child[0]: balance_child(child[0]) for child in c.fetchall()}
+            balance_c = {child[1]+' '+child[2]+' '+child[3]: balance_child(child[0]) for child in c.fetchall()}
             return render_template("index_parent.html",
                                    balance_p=balance_p,
                                    balance_c=balance_c,
                                    valid = session['status'])
         elif session['status'] == 'children':
             conn, c = connect_db()
-            sql = ("SELECT id_child FROM children where id_child = '{}'".format(session['id']))
+            sql = ("SELECT id_child, name, surname, patronymic FROM children where id_child = '{}'".format(session['id']))
             c.execute(sql)
-            balance_c = {child[0]: balance_child(child[0]) for child in c.fetchall()}
+            balance_c = {child[1]+' '+child[2]+' '+child[3]: balance_child(child[0]) for child in c.fetchall()}
             return render_template("index_children.html",
                                    balance_c=balance_c,
                                    valid=session['status'])
@@ -223,8 +223,8 @@ def add_regex():
     return redirect('/index')
 
 
-@app.route('/123', methods=['GET', 'POST'])
-def add_rege123():
+@app.route('/score', methods=['GET', 'POST'])
+def add_score():
     if session['id'] is not None:
         if session['status'] == 'parent':
             conn, c = connect_db()
