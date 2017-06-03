@@ -69,7 +69,7 @@ def login():
             return "Wrong password or login"
         else:
             session['login'] = form.login.data
-            session['id'] = data['id']
+            session['id'] = data['id'][0]
             session['status'] = data['status']
             return redirect('/index')
     return render_template('login.html',
