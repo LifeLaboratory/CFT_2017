@@ -3,7 +3,7 @@ from flask import Flask, request, redirect, url_for
 from flask import render_template, flash, redirect
 from app.check_parents_and_children import check_login
 from app.forms import LoginForm
-from app.forms import Regform
+from app.forms import Regform, closetaskform
 from app.forms import AddchildForm, Addtaskform
 from flask import make_response, session
 
@@ -93,20 +93,23 @@ def add_child():
 
 @app.route('/create_task', methods=['GET', 'POST'])
 def add_task():
-    conn, c = connect_db()
-    sql = ("SELECT id_child, login FROM children where id_parent = '{}'".format(session['id_parent']))
-    c.execute(sql)
-    form = Addtaskform()
-    form.childrens.choices = c.fetchall()
-    print(form.data)
-    if form.validate_on_submit():
-        uid_parent = session['id_parent']
-        create_task(uid_parent, form.childrens.data,  form.description.data, form.coin.data)
-        print(1)
-        return redirect('/index')
-    return render_template('add_task.html',
-                           title='add_task',
-                           form=form)
+    if session['id'] is not None:
+        if session['status'] == 'parent':
+            conn, c = connect_db()
+            sql = ("SELECT id_child, login FROM children where id_parent = '{}'".format(session['id']))
+            c.execute(sql)
+            form = Addtaskform()
+            form.childrens.choices = c.fetchall()
+            print(form.data)
+            if form.validate_on_submit():
+                uid_parent = session['id_parent']
+                create_task(uid_parent, form.childrens.data,  form.description.data, form.coin.data)
+                print(1)
+                return redirect('/index')
+            return render_template('add_task.html',
+                                   title='add_task',
+                                   form=form)
+    return redirect('/index')
 
 
 @app.route('/view_task', methods=['GET', 'POST'])
@@ -123,6 +126,43 @@ def view_task():
             c.execute(sql)
             result = c.fetchall()
     #   Добавить рендеринг результата
-    return render_template('view_task.html', title='view_task',
-                           status=session['status'], tasks=result)
+    #return render_template('view_task.html', title='view_task',
+    #                       status=session['status'], tasks=result)
+    return redirect('/index')
 
+
+@app.route('/close_task', methods=['GET', 'POST'])
+def close_task():
+    if session['id'] is not None:
+        if session['status'] == 'parent':
+            conn, c = connect_db()
+            sql = ("SELECT id_task, description FROM tasks where id_parent = '{}' and status = '1'".format(session['id']))
+            c.execute(sql)
+            #print(c.fetchall())
+            form = closetaskform()
+            form.tasks.choices = c.fetchall()
+            print(form.data)
+            if form.validate_on_submit():
+                uid_parent = session['id_parent']
+                create_task(uid_parent, form.childrens.data, form.description.data, form.coin.data)
+                print(1)
+                return redirect('/index')
+            return render_template('close_task.html',
+                                   title='close_task',
+                                   form=form)
+        elif session['status'] == 'children':
+            conn, c = connect_db()
+            sql = ("SELECT * FROM tasks where id_children = '{}' and status = '0'".format(session['id']))
+            c.execute(sql)
+            form = closetaskform()
+            form.tasks.choices = c.fetchall()
+            print(form.data)
+            if form.validate_on_submit():
+                uid_parent = session['id_parent']
+                create_task(uid_parent, form.childrens.data, form.description.data, form.coin.data)
+                print(1)
+                return redirect('/index')
+            return render_template('close_task.html',
+                                   title='close_task',
+                                   form=form)
+    return redirect('/index')
