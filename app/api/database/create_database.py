@@ -1,11 +1,15 @@
 #from connect_db import connect_db
-
+"""
 import sys
 import os
 directory_user_cabinet = os.getcwd()
 print (directory_user_cabinet)
 sys.path.insert(0, directory_user_cabinet)
 from connect_db import connect_db
+"""
+
+from app.api.database.connect_db import connect_db
+
 
 def create_table_parents():
     conn, c = connect_db()
@@ -26,6 +30,7 @@ def create_table_children():
     conn.commit()
     conn.close()
 create_table_children()
+
 
 def create_table_tasks():
     conn, c = connect_db()
