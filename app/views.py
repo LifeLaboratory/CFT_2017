@@ -29,6 +29,7 @@ from create_children import create_child
 from login_manager import login_in
 """
 
+
 @app.route('/', methods=['GET'])
 @app.route('/index')
 def index():
@@ -231,9 +232,10 @@ def add_score():
     if session['id'] is not None:
         if session['status'] == 'parent':
             conn, c = connect_db()
-            sql = (
-            "SELECT id_child, name, surname, patronymic FROM children where id_parent = '{}'".format(session['id']))
+            sql = ("SELECT id_child, name, surname, patronymic "
+                   "FROM children where id_parent = '{}'".format(session['id']))
             c.execute(sql)
+
             for child in c.fetchall():
                 _score, score = average_score(child[1] + ' ' + child[2] + ' ' + child[3])
                 print(_score, ' -> ', score)
