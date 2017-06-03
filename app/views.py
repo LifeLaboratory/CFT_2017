@@ -50,7 +50,7 @@ def index():
             return render_template("index_children.html",
                                    balance_c=balance_c,
                                    valid=session['status'])
-
+    return redirect('/index')
 
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
