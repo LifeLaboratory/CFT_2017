@@ -243,3 +243,9 @@ def add_score():
                                    title='add_regex',
                                    valid=session['status'])
     return redirect('/index')
+
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    session = None
+    return render_template('index.html')
