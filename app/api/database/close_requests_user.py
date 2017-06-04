@@ -18,7 +18,7 @@ from connect_db import connect_db
 def close_requests_user(id_task):
     conn, c = connect_db()
     sql = "update requests SET status = 1 "\
-                  "where id_requests = '{0}')".format(id_task)
+                  "where id_requests = '{0}'".format(id_task)
     print(sql)
     c.execute(sql)
     conn.commit()

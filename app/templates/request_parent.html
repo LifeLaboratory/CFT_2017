@@ -24,7 +24,8 @@
 
             <div>
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/view_task">Запросы от ребенка</a></li>
+                    <li class="active"><a href="/requests">Запросы от ребенка</a></li>
+                    <li><a href="/close_requests">Закрыть запрос от ребенка</a></li>
                     <li><a href="/logout">Выход</a></li>
                 </ul>
             </div>
@@ -54,25 +55,5 @@
 </tr>
             {% endfor %}
     </table>
-<p><input type="submit" value="Add"></p>
-
-
-
-
-
-    <!-- фамилия имя отество когда заходит ребенок-->
-    <h>{% for i in fio%}
-        {{i}}
-        {% endfor %}</h>
-
-    <!-- описание цена статус-->
-    <h>{% for i in tasks%}
-        {{i[3]}} {{i[4]}} {{i[5]}}
-        <br><br>
-        {% endfor %}</h>
-
-
-     <!-- фамилия имя отество описание цена статус когда заходит родитель-->
-
 </div>
 </body>

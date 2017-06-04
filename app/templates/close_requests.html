@@ -24,9 +24,10 @@
 
             <div>
                 <ul class="nav navbar-nav">
-                    <li><a href="/view_regex">Просмотр шаблонов нужд</a</li>
-                    <li class="active"><a href="/create_regex">Добавить новый шаблон нужд</a></li>
-                    <li><a href="/logout">Выход</a></li>
+                    <li class="active"><a href="/close_requests">Закрыть запрос от ребенка</a></li>
+                    <li><a href="/requests">Просмотр запросов от ребенка</a></li>
+
+                    <li><a href="/logout">Выйти</a></li>
                 </ul>
             </div>
         </div>
@@ -34,26 +35,17 @@
 
 
 <div class="container-fluid">
-<form action="" method="post" name="addtask", class="inline">
+<form action="" method="post" name="login">
     {{form.hidden_tag()}}
-
-    <label for="childrens">childrens</label>
-    <br>
-     {{form.childrens(size=5)}}
-        {% for error in form.errors.childrens %}
-        <span style="color: red;">[{{error}}]</span>
-        {% endfor %}<br>
-
-
-        <label for="description">description</label>
-        <input class="form-control" {{form.description(size=40)}}
-        {% for error in form.errors.description %}
+    <p>
+        {{form.tasks(size=10)}}<br>
+        {% for error in form.errors.tasks %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
 
     </p>
-    <p><input type="submit" value="Add"></p>
+    <p><input type="submit" value="Close"></p>
 </form>
 </div>
 </body>
