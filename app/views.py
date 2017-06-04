@@ -204,6 +204,7 @@ def close_task():
                 result = c.fetchall()
                 print(result[0][1], ' ', result[0][0])
                 transaction.in_close_to_open(result[0][1], result[0][0])
+                return redirect("/close_task")
             return render_template('close_task.html',
                                    title='close_task',
                                    form=form,
@@ -286,10 +287,11 @@ def add_score():
                 conn, c = connect_db()
                 sql = ("SELECT id_child, login FROM children where id_parent = '{}'".format(session['id']))
                 c.execute(sql)
-                form = Addtaskform()
+                #form = Addtaskform()
                 form.childrens.choices = c.fetchall()
                 if form.validate_on_submit():
                     transaction.bonus(form.coin.data, session['id'], form.childrens.data)
+                    print(11111)
                     return redirect("/score")
                 #conn, c = connect_db()
                 sql = ("SELECT id_child, name, surname, patronymic "
@@ -373,6 +375,7 @@ def close_requests():
                 sql = "select id_child, coin from requests where status = 1 and id_requests = '{}'".format(form.tasks.data)
                 c.execute(sql)
                 result = c.fetchall()
+                transaction.bonus(result[0][1], session['id'], result[0][0])
                 return redirect("/requests")
 
 
@@ -383,7 +386,6 @@ def close_requests():
                                    valid=session['status'])
     #except:
      #   return redirect('/index')
-
 
 
 @app.route('/pay_children', methods=['GET', 'POST'])
@@ -398,8 +400,29 @@ def pay_children():
             form.childrens.choices = c.fetchall()
             if form.validate_on_submit():
                 transaction.bonus(form.coin.data, session['id'], form.childrens.data)
-                return redirect("/close_requests")
+                return redirect("/pay_children")
             return render_template('pay_children.html',
+                                   title='add_task',
+                                   form=form,
+                                   valid=session['status'])
+    #except:
+     #   return redirect('/index')
+
+
+@app.route('/block_pay_children', methods=['GET', 'POST'])
+def block_pay_children():
+#try:
+    if session['id'] is not None:
+        if session['status'] == 'parent':
+            conn, c = connect_db()
+            sql = ("SELECT id_child, login FROM children where id_parent = '{}'".format(session['id']))
+            c.execute(sql)
+            form = bonusform()
+            form.childrens.choices = c.fetchall()
+            if form.validate_on_submit():
+                transaction.mulctl(form.coin.data, form.childrens.data)
+                return redirect("/block_pay_children")
+            return render_template('block_pay_children.html',
                                    title='add_task',
                                    form=form,
                                    valid=session['status'])

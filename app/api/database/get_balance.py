@@ -3,7 +3,7 @@ from app.api.database.connect_db import connect_db
 
 def balance_child(id):
     conn, c = connect_db()
-    c.execute("SELECT balance_needs, balance_open, balance_close FROM children WHERE id_child='{}'".format(id))
+    c.execute("SELECT balance_needs, balance_close, balance_open  FROM children WHERE id_child='{}'".format(id))
     result = c.fetchall()
     print(result)
     return [result[0][0], result[0][1], result[0][2]]
