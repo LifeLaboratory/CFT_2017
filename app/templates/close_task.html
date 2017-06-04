@@ -36,7 +36,7 @@
 <form action="" method="post" name="login">
     {{form.hidden_tag()}}
     <p>
-        {{form.tasks(size=5)}}<br>
+        {{form.tasks(size=10)}}<br>
         {% for error in form.errors.tasks %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>

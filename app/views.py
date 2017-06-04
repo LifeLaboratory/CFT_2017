@@ -18,7 +18,7 @@ from app.api.database.create_regex import create_regex
 from app.api.database.get_balance import balance_parent, balance_child
 from app.api.database.get_score_childrens import average_score
 from app.api.database.create_requests import create_requests
-
+from app.api.database.close_task import close_task_user
 # for linux
 """
 import sys
@@ -152,7 +152,8 @@ def view_task():
         if session['status'] == 'parent':
             print(session["id"])
             conn, c = connect_db()
-            sql = "SELECT tasks.id_child, tasks.description, tasks.coin, tasks.status FROM tasks where tasks.id_parent = '{}'".format(session['id'])
+            sql = "SELECT tasks.id_child, tasks.description, tasks.coin, tasks.status " \
+                  "FROM tasks where tasks.id_parent = '{}' order by tasks.status".format(session['id'])
             """sql = ("SELECT children.name, children.surname, children.patronymic, tasks.description, tasks.coin,"
                    " tasks.status FROM tasks, children where tasks.id_parent = '{}' and children.id_parent = '{}'"
                    " and tasks.id_parent = children.id_parent"
@@ -170,7 +171,7 @@ def view_task():
                                         tasksp=ans)
         elif session['status'] == 'children':
             conn, c = connect_db()
-            sql = ("SELECT * FROM tasks where id_child = '{}'".format(session['id']))
+            sql = ("SELECT * FROM tasks where id_child = '{}' and status = 0".format(session['id']))
             c.execute(sql)
             result = c.fetchall()
             sql = ("SELECT name, surname, patronymic FROM children where id_child = '{}'".format(session['id']))
@@ -187,33 +188,33 @@ def close_task():
     if session['id'] is not None:
         if session['status'] == 'parent':
             conn, c = connect_db()
-            sql = ("SELECT id_task, description FROM tasks where id_parent = '{}' and status = '1'".format(session['id']))
+            sql = ("SELECT id_task, description "
+                   "FROM tasks where id_parent = '{}' and status = '1'".format(session['id']))
             c.execute(sql)
-            #print(c.fetchall())
+            result = c.fetchall()
+            print(result)
             form = closetaskform()
-            form.tasks.choices = c.fetchall()
-            print(form.data)
+            form.tasks.choices = result
             if form.validate_on_submit():
-                uid_parent = session['id']
-                create_task(uid_parent, form.childrens.data, form.description.data, form.coin.data)
-                print(1)
-                return redirect('/index')
+                close_task_user(form.tasks.data, session['id'], 2)
+                #print(1)
+                #return redirect('/index')
             return render_template('close_task.html',
                                    title='close_task',
                                    form=form,
                                    valid=session['status'])
         elif session['status'] == 'children':
             conn, c = connect_db()
-            sql = ("SELECT * FROM tasks where id_child = '{}' and status = '0'".format(session['id']))
+            sql = ("SELECT id_task, description "
+                   "FROM tasks where id_child = '{}' and status = '0'".format(session['id']))
             c.execute(sql)
+            result = c.fetchall()
             form = closetaskform()
-            form.tasks.choices = c.fetchall()
-            print(form.data)
+            form.tasks.choices = result
             if form.validate_on_submit():
-                uid_parent = session['id']
-                create_task(uid_parent, form.childrens.data, form.description.data, form.coin.data)
-                print(1)
-                return redirect('/index')
+                print(form.tasks.data)
+                close_task_user(form.tasks.data, session['id'], 1)
+                #return redirect('/index')
             return render_template('close_task.html',
                                    title='close_task',
                                    form=form,
