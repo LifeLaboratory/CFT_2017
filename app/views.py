@@ -135,7 +135,6 @@ def add_task():
             form.childrens.choices = c.fetchall()
             if form.validate_on_submit():
                 uid_parent = session['id']
-                print (form.childrens.data)
                 create_task(form.childrens.data, uid_parent, form.description.data, form.coin.data)
                 return redirect('/view_task')
             return render_template('add_task.html',
@@ -149,16 +148,24 @@ def add_task():
 def view_task():
     if session['id'] is not None:
         if session['status'] == 'parent':
+            print(session["id"])
             conn, c = connect_db()
-            sql = ("SELECT children.name, children.surname, children.patronymic, tasks.description, tasks.coin,"
-                   " tasks.status  FROM tasks, children where tasks.id_parent = '{}' and children.id_parent = '{}'"
-                   "".format(session['id'], session['id']))
-
+            sql = "SELECT tasks.id_child, tasks.description, tasks.coin, tasks.status FROM tasks where tasks.id_parent = '{}'".format(session['id'])
+            """sql = ("SELECT children.name, children.surname, children.patronymic, tasks.description, tasks.coin,"
+                   " tasks.status FROM tasks, children where tasks.id_parent = '{}' and children.id_parent = '{}'"
+                   " and tasks.id_parent = children.id_parent"
+                   "".format(session['id'], session['id']))"""
             c.execute(sql)
             result = c.fetchall()
+            ans = []
+            for i in result:
+                sql = "SELECT name, surname, patronymic FROM children where id_child = '{}'".format(i[0])
+                c.execute(sql)
+                r = c.fetchall()
+                ans.append((r[0][0], r[0][1], r[0][2], i[1], i[2], i[3]))
             return render_template('view_task_parent.html', title='view_task',
                                         valid=session['status'],
-                                        tasksp=result)
+                                        tasksp=ans)
         elif session['status'] == 'children':
             conn, c = connect_db()
             sql = ("SELECT * FROM tasks where id_child = '{}'".format(session['id']))
@@ -239,13 +246,18 @@ def add_score():
             sql = ("SELECT id_child, name, surname, patronymic "
                    "FROM children where id_parent = '{}'".format(session['id']))
             c.execute(sql)
-            l = {}
-            for child in c.fetchall():
-                _score, score = average_score(child[1] + ' ' + child[2] + ' ' + child[3])
-                if _score is not None:
-                    l['child'] = _score
 
-                    print(l)
+            l = {child[1] + ' ' + child[2] + ' ' + child[3]:
+                     average_score(child[1] + ' ' + child[2] + ' ' + child[3])
+                 for child in c.fetchall()}
+            s = 0
+            print(111111111111111111)
+            for score in l:
+                #print(score)
+                if score != 'name':
+                    print(l[score])
+                    s += float(l[score])
+            score = round(s/(len(l[score])-1), 1)
             return render_template('score.html',
                                    title='add_regex',
                                    valid=session['status'])
