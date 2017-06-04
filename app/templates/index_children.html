@@ -35,13 +35,26 @@
 
 
 <div class="container-fluid">
+    <table class="table table-bordered table-hover ">
+        <thead>
+            <tr class="active">
+                <th>ФИО</th>
+                <th>Баланс на счете нужд</th>
+                <th>Баланс на открытом счете</th>
+            </tr>
+        </thead>
+        <tbody>
                 {% for i in balance_c %}
-                {{i}}
+                <td>{{i}}</td>
                     {%for j in range(len_balance_c)%}
-                        {{balance_c[i][j]}}
+                        <td>{{balance_c[i][j]}}</td>
+
+                        {% endfor %}
+             </tr>
                     {% endfor %}
-                <p></p>
-                {% endfor %}
+
+
 
 </div>
 </body>
+

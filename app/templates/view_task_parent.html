@@ -44,19 +44,27 @@
                 <th>Описание задачи</th>
                 <th>Стоимость</th>
                 <th>Статус</th>
+                <th> </th>
             </tr>
         </thead>
-        <tbody>
+        <body>
         <tr>
 
 
             {% for i in tasksp%}
             <td>{{i[0]}} {{i[1]}} {{i[2]}}</td> <td>{{i[3]}}</td> <td>{{i[4]}}</td> <td>{{i[5]}}</td>
+            <td><form action="" method="post" name="addtask">
+
+            </td>
 </tr>
             {% endfor %}
-
-        </tbody>
     </table>
+<p><input type="submit" value="Add"></p>
+
+
+
+
+
     <!-- фамилия имя отество когда заходит ребенок-->
     <h>{% for i in fio%}
         {{i}}

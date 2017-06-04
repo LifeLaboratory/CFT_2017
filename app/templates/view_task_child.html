@@ -34,7 +34,25 @@
 
 
 <div class="container-fluid">
-    <!-- фамилия имя отество когда заходит ребенок-->
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr class="active">
+                <th>ФИО</th>
+                <th>Описание задачи</th>
+                <th>Стоимость</th>
+                <th>Статус</th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tr>
+            <td>{{fio[0]+" "+fio[1]+" "+fio[2]}}</td>
+
+            {% for i in tasks%}
+            <td>{{i[0]}} {{i[1]}} {{i[2]}}</td> <td>{{i[3]}}</td> <td>{{i[4]}}</td> <td>{{i[5]}}</td>
+</tr>
+            {% endfor %}
+
     <h>{% for i in fio%}
         {{i}}
         {% endfor %}</h>

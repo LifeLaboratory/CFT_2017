@@ -1,10 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<meta charset="utf-8">
+<title>Дневник </title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
 </head>
 <body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="/index" class="navbar-brand">Главная</a>
+            </div>
 
+            <div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/score">Дневник</a></li>
+                    <li><a href="/logout">Выход</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+<div class="container-fluid">
+    <div class="container-fluid">
+    </div>
+    <table class="table table-bordered table-hover ">
+<thead>
+            <tr class="active">
+                <th>ФИО детей</th>
+                <th>Predmet1</th>
+                <th>Predmet2</th>
+                <th>Predmet3</th>
+                <th>Predmet4</th>
+                <th>Predmet5</th>
+                <th>Predmet6</th>
+                <th>Predmet7</th>
+                <th>Predmet8</th>
+                <th>Predmet9</th>
+                <th>Predmet10</th>
+                <th>Средняя оценка</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+
+              {% for i in users %}
+
+
+                {% for j in users[i] %}
+                    <td>{{users[i][j]}}</td>
+
+                {% endfor %}
+                               </tr>
+                    {% endfor %}
+
+
+
+
+        </tbody>
+    </table>
+
+</div>
 </body>
-</html>
