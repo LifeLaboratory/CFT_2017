@@ -7,7 +7,7 @@ from done_task import not_executed, executed, done, _all
 
 bot = telebot.TeleBot('334091792:AAExM2izWSclqPoHZ109hrsZK-3cfUAVxzs')
 
-id_parent = None
+id_parent_g = None
 id_child = None
 
 try:
@@ -35,37 +35,35 @@ sent_bon - send bonus in open invoices children (commands <coins>)
 
     @bot.message_handler(commands=['login'])
     def login(message):
-        try:
-            row = str(message.text)
-            s = str(row[7::])
-            if len(s) == 0:
-                bot.send_message(message.chat.id, "Wrong!")
-            else:
-                login = str(s[:s.find(' ')])
-                password = str(s[:s.find(' ')])
-                conn = sqlite3.connect('database.db')
-                c = conn.cursor()
-                c.execute("SELECT id_parent FROM parents WHERE login='{0}' and password='{1}'".format(login, password))
-                global _id_parent_
-                _id_parent_ = c.fetchall()
-                id_parent = _id_parent_[0][0]
-                print(id_parent)
-                c.execute("SELECT id_child FROM children WHERE id_parent='{}'".format(id_parent))
-                _id_child_ = c.fetchall()
-                global id_child
-                id_child = _id_child_[0][0]
-                print(id_child)
-                conn.commit()
-                conn.close()
-                bot.send_message(message.chat.id, "Authentication successful")
-                return (id_parent, id_child)
-        except:
+        row = str(message.text)
+        s = str(row[7::])
+        if len(s) == 0:
+            bot.send_message(message.chat.id, "Wrong!")
+        else:
+            login = str(s[:s.find(' ')])
+            password = str(s[:s.find(' ')])
+            conn = sqlite3.connect('database.db')
+            c = conn.cursor()
+            c.execute("SELECT id_parent FROM parents WHERE login='{0}' and password='{1}'".format(login, password))
+            global id_parent_g
+            _id_parent_ = c.fetchall()
+            id_parent_g = _id_parent_[0][0]
+            print(id_parent_g)
+            c.execute("SELECT id_child FROM children WHERE id_parent='{}'".format(id_parent_g))
+            _id_child_ = c.fetchall()
+            global id_child
+            id_child = _id_child_[0][0]
+            print(id_child)
+            conn.commit()
+            conn.close()
+            bot.send_message(message.chat.id, "Authentication successful")
+            return (id_parent_g, id_child)
             bot.send_message(message.chat.id, "Somewhere wrong!")
 
     @bot.message_handler(commands=['parent_bal'])
     def parents_balance(message):
-        id_parent = _id_parent_[0][0]
-        if _id_parent_ == None:
+        id_parent = id_parent_g
+        if id_parent == None:
             bot.send_message(message.chat.id, "Need authentication!")
         else:
             s = balance_parent(id_parent)
@@ -73,8 +71,9 @@ sent_bon - send bonus in open invoices children (commands <coins>)
 
     @bot.message_handler(commands=['child_bal'])
     def children_balance(message):
+        id_parent = id_parent_g
         id_c = id_child
-        if _id_parent_ == None:
+        if id_parent == None:
             bot.send_message(message.chat.id, "Need authentication!")
         else:
             s = balance_child(id_c)
@@ -82,9 +81,9 @@ sent_bon - send bonus in open invoices children (commands <coins>)
 
     @bot.message_handler(commands=['sent_bon'])
     def bonus_sent(message):
-        id_parent = _id_parent_[0][0]
+        id_parent = id_parent_g
         id_c = id_child
-        if _id_parent_ == None:
+        if id_parent == None:
             bot.send_message(message.chat.id, "Need authentication!")
         else:
             row_coin = str(message.text)
@@ -98,9 +97,9 @@ sent_bon - send bonus in open invoices children (commands <coins>)
 
     @bot.message_handler(commands=['sent_n'])
     def sent_to_needs(message):
-        id_parent = _id_parent_[0][0]
+        id_parent = id_parent_g
         id_c = id_child
-        if _id_parent_ == None:
+        if id_parent == None:
             bot.send_message(message.chat.id, "Need authentication!")
         else:
             if len(coin) == 0:
@@ -118,9 +117,9 @@ sent_bon - send bonus in open invoices children (commands <coins>)
 
     @bot.message_handler(commands=['sent_m'])
     def mictf(message):
-        id_parent = _id_parent_[0][0]
+        id_parent = id_parent_g
         id_c = id_child
-        if _id_parent_ == None:
+        if id_parent == None:
             bot.send_message(message.chat.id, "Need authentication!")
         else:
             row_coin = str(message.text)
@@ -133,9 +132,9 @@ sent_bon - send bonus in open invoices children (commands <coins>)
 
     @bot.message_handler(commands=['sent_t'])
     def task(message):
-        id_parent = _id_parent_[0][0]
+        id_parent = id_parent_g
         id_c = id_child
-        if _id_parent_ == None:
+        if id_parent == None:
             bot.send_message(message.chat.id, "Need authentication!")
         else:
             row_task = str(message.text)
@@ -148,12 +147,12 @@ sent_bon - send bonus in open invoices children (commands <coins>)
 
     @bot.message_handler(commands=['all_t'])
     def all_task(message):
-        id_parent = _id_parent_[0][0]
+        id_parent = id_parent_g
         id_c = id_child
-        if _id_parent_ == None:
+        if id_parent == None:
             bot.send_message(message.chat.id, "Need authentication!")
         else:
-            s = _all()
+            s = _all(id_c)
             n = 0
             for i in s:
                 n += 1
@@ -162,12 +161,12 @@ sent_bon - send bonus in open invoices children (commands <coins>)
 
     @bot.message_handler(commands=['not_exec_t'])
     def not_execute():
-        id_parent = _id_parent_[0][0]
+        id_parent = id_parent_g
         id_c = id_child
-        if _id_parent_ == None:
+        if id_parent == None:
             bot.send_message(message.chat.id, "Need authentication!")
         else:
-            s = not_executed()
+            s = not_executed(id_c)
             n=0
             for i in s:
                 n += 1
@@ -176,9 +175,9 @@ sent_bon - send bonus in open invoices children (commands <coins>)
 
     @bot.message_handler(commands=['exec_t'])
     def execute():
-        id_parent = _id_parent_[0][0]
+        id_parent = id_parent_g
         id_c = id_child
-        if _id_parent_ == None:
+        if id_parent == None:
             bot.send_message(message.chat.id, "Need authentication!")
         else:
             p = executed()
@@ -190,9 +189,9 @@ sent_bon - send bonus in open invoices children (commands <coins>)
 
     @bot.message_handler(commands=['check_t'])
     def check(message):
-        id_parent = _id_parent_[0][0]
+        id_parent = id_parent_g
         id_c = id_child
-        if _id_parent_ == None:
+        if id_parent == None:
             bot.send_message(message.chat.id, "Need authentication!")
         else:
             row_number = str(message.text)
