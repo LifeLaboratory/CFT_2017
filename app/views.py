@@ -3,7 +3,7 @@ from flask import Flask, request, redirect, url_for
 from flask import render_template, flash, redirect
 from app.check_parents_and_children import check_login
 from app.forms import LoginForm, addregexform
-from app.forms import Regform, closetaskform
+from app.forms import Regform, closetaskform, bonusform
 from app.forms import AddchildForm, Addtaskform, requestaddform
 from flask import make_response, session
 
@@ -253,7 +253,15 @@ def add_score():
     try:
         if session['id'] is not None:
             if session['status'] == 'parent':
+                form = bonusform()
                 conn, c = connect_db()
+                sql = ("SELECT id_child, login FROM children where id_parent = '{}'".format(session['id']))
+                c.execute(sql)
+                form = Addtaskform()
+                form.childrens.choices = c.fetchall()
+                if form.validate_on_submit():
+                    transaction.bonus(form.coin.data, session['id'], form.childrens.data)
+                #conn, c = connect_db()
                 sql = ("SELECT id_child, name, surname, patronymic "
                        "FROM children where id_parent = '{}'".format(session['id']))
                 c.execute(sql)
@@ -266,13 +274,14 @@ def add_score():
                 for score in l:
                     s = 0
                     for sc in l[score]:
-                        if sc != 'name':
+                        if sc != 'name' and sc != 'mean':
                             s += float(l[score][sc])
-                    ans.append(str(round(s/(len(l[score])-1), 1)))
+                    l[score]['mean'] = str(round(s/(len(l[score])-1), 1))
+                    #ans.append(str(round(s/(len(l[score])-1), 1)))
                 return render_template('score.html',
                                        title='add_regex',
                                        users=l,
-                                       score=ans,
+                                       form=form,
                                        valid=session['status'])
     except:
         return redirect('/index')

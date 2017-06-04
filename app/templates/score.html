@@ -72,5 +72,24 @@
         </tbody>
     </table>
 
+<form action="" method="post" name="score", class="inline">
+    {{form.hidden_tag()}}
+
+    <br>
+     {{form.childrens(size=5)}}
+        {% for error in form.errors.childrens %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+
+        <label for="coin">coin</label>
+        <input class="form-control" {{form.coin(size=40)}}
+        {% for error in form.errors.coin %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+    </p>
+    <p><input type="submit" value="Add"></p>
+</form>
 </div>
 </body>

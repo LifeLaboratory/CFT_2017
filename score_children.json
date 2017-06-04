@@ -10,7 +10,8 @@
         "Predmet7_score": "5",
         "Predmet8_score": "4",
         "Predmet9_score": "3.5",
-        "Predmet10_score": "3"
+        "Predmet10_score": "3",
+        "mean": "0"
     },
     "2": {
         "name": "an123 wqeqwe123 na123",
@@ -23,7 +24,8 @@
         "Predmet7_score": "5",
         "Predmet8_score": "4",
         "Predmet9_score": "3.5",
-        "Predmet10_score": "3"
+        "Predmet10_score": "3",
+        "mean": "0"
     },
     "3": {
         "name": "Ivanov Petr Chenovich",
@@ -36,6 +38,7 @@
         "Predmet7_score": "5",
         "Predmet8_score": "4",
         "Predmet9_score": "3.5",
-        "Predmet10_score": "3"
+        "Predmet10_score": "3",
+        "mean": "0"
     }
 }

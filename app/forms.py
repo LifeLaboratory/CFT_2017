@@ -64,3 +64,7 @@ class addregexform(FlaskForm):
 class requestaddform(FlaskForm):
     description = StringField('description', [validators.Length(min=10, max=255)])
     coin = IntegerField('coin', [validators.NumberRange(min=1, max=500)])
+
+class bonusform(FlaskForm):
+    childrens = SelectField('children')
+    coin = IntegerField('coin', [validators.NumberRange(min=1, max=500)])
