@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Главная </title>
+<title>Close requests </title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Latest compiled and minified CSS -->
@@ -24,17 +24,28 @@
 
             <div>
                 <ul class="nav navbar-nav">
-                    <li><a href="/registration">Регистрация</a</li>
-                    <li><a href="/login">Авторизация</a></li>
+                    <li class="active"><a href="/close_requests">Закрыть запрос от ребенка</a></li>
+                    <li><a href="/requests">Просмотр запросов от ребенка</a></li>
+
+                    <li><a href="/logout">Выйти</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
 
-    <h2 class="text-center">Добро пожаловать в Финансовый Мотиватор Ребенка </h2>
+<div class="container-fluid">
+<form action="" method="post" name="login">
+    {{form.hidden_tag()}}
+    <p>
+        {{form.tasks(size=10)}}<br>
+        {% for error in form.errors.tasks %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
 
 
+    <p><input type="submit" value="Close"></p>
+</form>
 </div>
 </body>
 </html>

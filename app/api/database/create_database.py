@@ -20,7 +20,7 @@ def create_table_parents():
 
     conn.commit()
     conn.close()
-#create_table_parents()
+#
 
 
 def create_table_children():
@@ -31,7 +31,7 @@ def create_table_children():
         number_close int, number_open int, number_needs int)''')
     conn.commit()
     conn.close()
-#create_table_children()
+#
 
 
 def create_table_tasks():
@@ -40,7 +40,7 @@ def create_table_tasks():
         description varchar(255), coin int, status int)''')
     conn.commit()
     conn.close()
-#create_table_tasks()
+#
 
 
 def create_table_regex():
@@ -49,7 +49,7 @@ def create_table_regex():
         description varchar(255))''')
     conn.commit()
     conn.close()
-#create_table_regex()
+#
 
 
 def create_table_requests():
@@ -59,3 +59,7 @@ def create_table_requests():
     conn.commit()
     conn.close()
 create_table_requests()
+create_table_parents()
+create_table_regex()
+create_table_children()
+create_table_tasks()

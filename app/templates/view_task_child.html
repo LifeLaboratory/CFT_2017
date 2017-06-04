@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Вход </title>
+<title>Задачи </title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Latest compiled and minified CSS -->
@@ -46,29 +46,14 @@
             </tr>
         </thead>
         <tr>
-            <td>{{fio[0]+" "+fio[1]+" "+fio[2]}}</td>
+
 
             {% for i in tasks%}
-            <td>{{i[0]}} {{i[1]}} {{i[2]}}</td> <td>{{i[3]}}</td> <td>{{i[4]}}</td> <td>{{i[5]}}</td>
+            <td>{{fio[0]+" "+fio[1]+" "+fio[2]}}</td><td>{{i[3]}}</td>  <td>{{i[4]}}</td> <td>{{i[5]}}</td>
 </tr>
             {% endfor %}
 
-    <h>{% for i in fio%}
-        {{i}}
-        {% endfor %}</h>
-
-    <!-- описание цена статус-->
-    <h>{% for i in tasks%}
-        {{i[3]}} {{i[4]}} {{i[5]}}
-        <br><br>
-        {% endfor %}</h>
-
-
-     <!-- фамилия имя отество описание цена статус когда заходит родитель-->
-    <h>{% for i in tasksp%}
-      {{i[0]}} {{i[1]}} {{i[2]}} {{i[3]}} {{i[4]}} {{i[5]}}
-        <br><br>
-        {% endfor %}</h>
 
 </div>
 </body>
+</html>

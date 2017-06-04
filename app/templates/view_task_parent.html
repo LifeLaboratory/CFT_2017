@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Вход </title>
+<title>Задачи </title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Latest compiled and minified CSS -->
@@ -26,8 +26,7 @@
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="/view_task">Просмотр заданий</a></li>
                     <li><a href="/create_task">Добавить новое задание</a></li>
-                    <li><a href="/#">Редактировать задание</a></li>
-                    <li><a href="/close_task">Закрыть существующее задание</a></li>
+                    <li><a href="/close_task">Закрыть выполненные ребенком задания</a></li>
                     <li><a href="/logout">Выход</a></li>
                 </ul>
             </div>
@@ -52,32 +51,23 @@
 
 
             {% for i in tasksp%}
-            <td>{{i[0]}} {{i[1]}} {{i[2]}}</td> <td>{{i[3]}}</td> <td>{{i[4]}}</td> <td>{{i[5]}}</td>
+            <td>{{i[0]}} {{i[1]}} {{i[2]}}</td> <td>{{i[3]}}</td> <td>{{i[4]}}</td>
+                {% if i[5] == 0 %}
+                    <td>Открытая задача</td>
+                {% elif i[5] == 1 %}
+                    <td>Сдал родителям задача</td>
+                {% else %}
+                    <td>Закрытая задача</td>
+                {% endif %}
             <td><form action="" method="post" name="addtask">
 
             </td>
 </tr>
             {% endfor %}
     </table>
-<p><input type="submit" value="Add"></p>
 
 
-
-
-
-    <!-- фамилия имя отество когда заходит ребенок-->
-    <h>{% for i in fio%}
-        {{i}}
-        {% endfor %}</h>
-
-    <!-- описание цена статус-->
-    <h>{% for i in tasks%}
-        {{i[3]}} {{i[4]}} {{i[5]}}
-        <br><br>
-        {% endfor %}</h>
-
-
-     <!-- фамилия имя отество описание цена статус когда заходит родитель-->
 
 </div>
 </body>
+</html>

@@ -219,7 +219,7 @@ def close_task():
             if form.validate_on_submit():
                 print(form.tasks.data)
                 close_task_user(form.tasks.data, session['id'], 1)
-                #return redirect('/index')
+                return redirect('/view_task')
             return render_template('close_task.html',
                                    title='close_task',
                                    form=form,
@@ -239,7 +239,7 @@ def add_regex():
                 form.childrens.choices = c.fetchall()
                 if form.validate_on_submit():
                     create_regex(form.childrens.data,  form.description.data)
-                    return redirect('/index')
+                    return redirect('/view_regex')
                 return render_template('add_regex.html',
                                        title='add_regex',
                                        form=form,
@@ -290,6 +290,7 @@ def add_score():
                 form.childrens.choices = c.fetchall()
                 if form.validate_on_submit():
                     transaction.bonus(form.coin.data, session['id'], form.childrens.data)
+                    return redirect("/score")
                 #conn, c = connect_db()
                 sql = ("SELECT id_child, name, surname, patronymic "
                        "FROM children where id_parent = '{}'".format(session['id']))
@@ -361,7 +362,7 @@ def close_requests():
         if session['status'] == 'parent':
             conn, c = connect_db()
             sql = ("SELECT id_requests, description "
-                   "FROM requests where id_parent = '{}'".format(session['id']))
+                   "FROM requests where id_parent = '{}' and status = 0".format(session['id']))
             c.execute(sql)
             result = c.fetchall()
             print(result)
@@ -369,14 +370,16 @@ def close_requests():
             form.tasks.choices = result
             if form.validate_on_submit():
                 close_requests_user(form.tasks.data)
-                sql = "select id_child, coin from requests where status = 1 and id_task = '{}'".format(form.tasks.data)
+                sql = "select id_child, coin from requests where status = 1 and id_requests = '{}'".format(form.tasks.data)
                 c.execute(sql)
                 result = c.fetchall()
-                print(result[0][1], ' ', result[0][0])
+                return redirect("/requests")
 
 
-            return render_template('request_parent.html',
+
+            return render_template('close_requests.html',
                                    title='add_task',
+                                   form=form,
                                    valid=session['status'])
     #except:
      #   return redirect('/index')
