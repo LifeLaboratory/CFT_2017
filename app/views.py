@@ -194,7 +194,7 @@ def close_task():
             form.tasks.choices = c.fetchall()
             print(form.data)
             if form.validate_on_submit():
-                uid_parent = session['id_parent']
+                uid_parent = session['id']
                 create_task(uid_parent, form.childrens.data, form.description.data, form.coin.data)
                 print(1)
                 return redirect('/index')
@@ -210,7 +210,7 @@ def close_task():
             form.tasks.choices = c.fetchall()
             print(form.data)
             if form.validate_on_submit():
-                uid_parent = session['id_parent']
+                uid_parent = session['id']
                 create_task(uid_parent, form.childrens.data, form.description.data, form.coin.data)
                 print(1)
                 return redirect('/index')
@@ -274,39 +274,39 @@ def add_score():
 
 @app.route('/requests', methods=['GET', 'POST'])
 def request():
-    try:
-        if session['id'] is not None:
-            if session['status'] == 'parent':
-                conn, c = connect_db()
-                sql = "SELECT id_child, description, coin FROM requests where id_parent = '{}'".format(session['id'])
+#try:
+    if session['id'] is not None:
+        if session['status'] == 'parent':
+            conn, c = connect_db()
+            sql = "SELECT id_child, description, coin FROM requests where id_parent = '{}'".format(session['id'])
+            c.execute(sql)
+            result = c.fetchall()
+            ans = []
+            for i in result:
+                sql = "SELECT name, surname, patronymic FROM children where id_child = '{}'".format(i[0])
                 c.execute(sql)
-                result = c.fetchall()
-                ans = []
-                for i in result:
-                    sql = "SELECT name, surname, patronymic FROM children where id_child = '{}'".format(i[0])
-                    c.execute(sql)
-                    r = c.fetchall()
-                    ans.append((r[0][0], r[0][1], r[0][2], i[2], i[3]))
-                print(ans)
-                return render_template('request_parent.html',
-                                       title='add_task',
-                                       valid=session['status'])
-            elif session['status'] == 'child':
-                form = requestaddform()
-                conn, c = connect_db()
-                sql = "SELECT description, coin FROM requests where id_child = '{}'".format(session['id'])
-                c.execute(sql)
-                result = c.fetchall()
-                if form.validate_on_submit():
-                    uid_parent = session['id_parent']
-                    create_requests(uid_parent, form.childrens.data, form.description.data, form.coin.data)
-                return render_template('request_child.html',
-                                       title='add_task',
-                                       form=form,
-                                       result=result,
-                                       valid=session['status'])
-    except:
-        return redirect('/index')
+                r = c.fetchall()
+                ans.append((r[0][0], r[0][1], r[0][2], i[1], i[2]))
+            return render_template('request_parent.html',
+                                   title='add_task',
+                                   result=ans,
+                                   valid=session['status'])
+        elif session['status'] == 'children':
+            form = requestaddform()
+            conn, c = connect_db()
+            sql = "SELECT description, coin FROM requests where id_child = '{}'".format(session['id'])
+            c.execute(sql)
+            result = c.fetchall()
+            if form.validate_on_submit():
+                uid_parent = session['id']
+                create_requests(uid_parent, form.description.data, form.coin.data)
+            return render_template('request_child.html',
+                                   title='add_task',
+                                   form=form,
+                                   result=result,
+                                   valid=session['status'])
+    #except:
+     #   return redirect('/index')
 
 
 @app.route('/logout', methods=['GET', 'POST'])
