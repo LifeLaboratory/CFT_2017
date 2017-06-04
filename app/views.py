@@ -8,6 +8,7 @@ from app.forms import AddchildForm, Addtaskform, requestaddform
 from flask import make_response, session
 
 
+from app.api.money.transaction import transaction
 # for other os0
 from app.api.database.connect_db import connect_db
 from app.api.database.create_parent import create_parent
@@ -197,8 +198,11 @@ def close_task():
             form.tasks.choices = result
             if form.validate_on_submit():
                 close_task_user(form.tasks.data, session['id'], 2)
-                #print(1)
-                #return redirect('/index')
+                sql = "select id_child, coin from tasks where status = 2 and id_task = '{}'".format(form.tasks.data)
+                c.execute(sql)
+                result = c.fetchall()
+                print(result[0][1], ' ', result[0][0])
+                transaction.in_close_to_open(result[0][1], result[0][0])
             return render_template('close_task.html',
                                    title='close_task',
                                    form=form,
