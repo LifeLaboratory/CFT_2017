@@ -24,18 +24,17 @@ def executed(id_p):
     conn.close()
     return(p)
 
-def done(id_task):
-    con = sqlite3.connect("database.db")
-    c = con.cursor()
-    sql = "UPDATE tasks SET status='{0}' WHERE id_task='{1}'".format(2, id_task)
-    c.execute(sql)
-    con.commit()
-    con.close()
+def close_task_user(id_task, id_c, id_p):
+    conn = sqlite3.connect("database.db")
+    c = conn.cursor()
+    sql = "".format(id_task, id_c, id_p)
+    c.execute("UPDATE tasks SET status = 2 where id_task = '{0}' and id_child = '{1}' and id_parent = '{2}'".format(id_task, id_c, id_p))
+    conn.commit()
+    conn.close()
 
 def checkdone(description, id_c):
     con = sqlite3.connect("database.db")
     c = con.cursor()
-    sql = "UPDATE tasks SET status='{0}' WHERE description='{1}' AND id_child='{2}'".format(1, description, id_c)
-    c.execute(sql)
+    c.execute("UPDATE tasks SET status='{0}' WHERE description='{1}' AND id_child='{2}'".format(1, description, id_c))
     con.commit()
     con.close()

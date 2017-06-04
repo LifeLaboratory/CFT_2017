@@ -3,7 +3,7 @@ import sqlite3
 from transaction import transaction
 from get_balance import balance_child, balance_parent
 from create_task import create_task
-from done_task import not_executed, executed, done, _all
+from done_task import not_executed, executed, close_task_user, _all
 
 bot = telebot.TeleBot('334091792:AAExM2izWSclqPoHZ109hrsZK-3cfUAVxzs')
 
@@ -205,10 +205,12 @@ sent_bon - send bonus in open invoices children (commands <coins>)
             else:
                 con = sqlite3.connect("database.db")
                 c = con.cursor()
-                s1 = not_executed(id_parent)
-                c.execute("UPDATE tasks SET status='{0}' WHERE rowid='{1}'".format(2, rowid))
+                c.execute("SELECT id_task FROM tasks WHERE status=1 and id_parent='{}'".format(id_parent))
+                id_task = c.fetchall()[0][0]
+                print(id_task)
                 con.commit()
                 con.close()
+                s1 = close_task_user(id_task, id_parent, id_c)
                 messages = "Task number {} was execute!".format(rowid)
                 bot.send_message(message.chat.id, messages)
 
