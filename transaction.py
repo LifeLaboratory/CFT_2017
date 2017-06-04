@@ -46,7 +46,7 @@ class transaction():
                 coin_children_close = i
             #зачисляем ему на закрытый счет сумму
             coin_transaction_to_children = int(coin_children_close) + int(coin)
-            c.execute("UPDATE children SET balance_close='{}'".format(coin_transaction_to_children))
+            c.execute("UPDATE children SET balance_close='{0}' WHERE id_children='{1}'".format(coin_transaction_to_children, id_c))
             conn.commit()
             conn.close()
 
@@ -85,7 +85,7 @@ class transaction():
         if coin_transaction_from_parents < 0:
             return("No many")
         else:
-            c.execute("UPDATE parents SET balance_parent='{}'".format(coin_transaction_from_parents))
+            c.execute("UPDATE parents SET balance_parent='{0}' WHERE id_parent='{1}'".format(coin_transaction_from_parents, id_p))
             #получаем сумму из открытого счета ребенка
             coin_children_open = c.execute("SELECT balance_open FROM children WHERE id_child='{}'".format(id_c)).fetchall()
             for i in coin_children_open[0]:
