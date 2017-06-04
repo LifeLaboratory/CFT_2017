@@ -7,11 +7,10 @@ def average_score():
 
     s = 0
     for i in range(1, 10):
+        name = data["name"]
         s += float(data["Predmet{}_score".format(i)])
 
     score = round(s/i, 1)
-    return(score)
+    return(name, score)
 
 print(average_score())
-
-create table if not exist (id(autoincrement))
