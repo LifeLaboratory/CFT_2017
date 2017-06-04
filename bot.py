@@ -7,6 +7,8 @@ from done_task import not_executed, executed, done, _all
 
 bot = telebot.TeleBot('334091792:AAExM2izWSclqPoHZ109hrsZK-3cfUAVxzs')
 
+_id_parent_ = None
+
 try:
     @bot.message_handler(commands=['start'])
     def start(message):
@@ -30,10 +32,31 @@ sent_bon - send bonus in open invoices children (commands <coins>)
         '''
         bot.send_message(message.chat.id, helps)
 
+    @bot.message_handler(commands=['login'])
+    def login(message):
+        try:
+            row = str(message.text)
+            s = str(row[7::])
+            login = str(s[:s.find(' ')])
+            password = str(s[:s.find(' ')])
+            conn = sqlite3.connect('database.db')
+            c = conn.cursor()
+            c.execute("SELECT id_parent FROM parents WHERE login='{0}' and password='{1}'".format(login, password))
+            _id_parent_ = c.fetchall()
+            print(_id_parent_)
+            conn.commit()
+            conn.close()
+            bot.send_message(message.chat.id, "Authentication successful")
+        except:
+            bot.send_message(message.chat.id, "Somewhere wrong!")
+
     @bot.message_handler(commands=['parent_bal'])
     def parents_balance(message):
-        s = balance_parent("Sveta1")
-        bot.send_message(message.chat.id, s)
+        if _id_parent_ == None:
+            bot.send_message(message.chat.id, "Need authentication!")
+        else:
+            s = balance_parent(_id_parent_)
+            bot.send_message(message.chat.id, s)
 
     @bot.message_handler(commands=['sent_n'])
     def sent_to_needs(message):
