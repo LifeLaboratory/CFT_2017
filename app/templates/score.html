@@ -89,13 +89,13 @@
         {% endfor %}<br>
 
 
-        <label for="coin">coin</label>
+        <label for="coin">Цена</label>
         <input class="form-control" {{form.coin(size=40)}}
         {% for error in form.errors.coin %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
-    <p><input type="submit" value="Add"></p>
+    <p><input type="submit" value="Перевести"></p>
 </form>
 </div>
 </body>

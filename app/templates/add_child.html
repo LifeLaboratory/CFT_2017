@@ -41,62 +41,62 @@
 <div class="container-fluid">
 <form action="" method="post" name="addchild", class="inline">
     {{form.hidden_tag()}}
-    <label for="login">login</label>
+    <label for="Логин">Логин</label>
     <input class="form-control" {{form.login(size=40)}}
         {% for error in form.errors.login %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
-    <label for="password">password</label>
+    <label for="password">Пароль</label>
     <input class="form-control" {{form.password(size=40)}}
         {% for error in form.errors.password %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
-        <label for="PasswordRepeat">passwordrepeat</label>
+        <label for="PasswordRepeat">Повторите пароль</label>
         <input class="form-control" {{form.PasswordRepeat(size=40)}}
         {% for error in form.errors.PasswordRepeat %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
-        <label for="name">name</label>
+        <label for="name">Имя</label>
         <input class="form-control" {{form.name(size=40)}}
         {% for error in form.errors.name %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
-         <label for="surname">surname</label>
+         <label for="surname">Фамилия</label>
         <input class="form-control" {{form.surname(size=40)}}
         {% for error in form.errors.surname %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
-         <label for="patronymic">patronymic</label>
+         <label for="patronymic">Отчество</label>
         <input class="form-control" {{form.patronymic(size=40)}}
         {% for error in form.errors.patronymic %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
 
-         <label for="sex">sex</label>
+         <label for="sex">Пол</label>
         <input class="form-control" {{form.sex(size=40)}}
         {% for error in form.errors.sex %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
-         <label for="number_close">number_close</label>
+         <label for="number_close">Закрытый номер счета</label>
         <input class="form-control" {{form.number_close(size=40)}}
         {% for error in form.errors.number_close %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
-         <label for="number_needs">number_needs</label>
+         <label for="number_needs">Номер счета нужд</label>
         <input class="form-control" {{form.number_needs(size=40)}}
         {% for error in form.errors.number_needs %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
-         <label for="number_open">number_open</label>
+         <label for="number_open">Открытый  номер счета</label>
         <input class="form-control" {{form.number_open(size=40)}}
         {% for error in form.errors.number_open %}
         <span style="color: red;">[{{error}}]</span>

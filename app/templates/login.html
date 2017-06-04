@@ -35,19 +35,19 @@
 <div class="container-fluid">
 <form action="" method="post" name="login">
     {{form.hidden_tag()}}
-        <h1>login:</h1>
+        <h3>Логин:</h3>
         {{form.login(size=40)}}<br>
         {% for error in form.errors.login %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
-        <h1>password:</h1>
+        <h3>Пароль:</h3>
         {{form.password(size=40)}}<br>
         {% for error in form.errors.password %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
-<input type="submit" value="Sign In">
+<input type="submit" value="Войти">
 </form>
 </div>
 </body>

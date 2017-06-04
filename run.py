@@ -1,4 +1,4 @@
 from app import app
-app.run(threaded=True, debug = True)
+app.run(host='0.0.0.0', port='80', debug=False, threaded=True )
 
-# host='0.0.0.0'
+# host='192.168.215.212'

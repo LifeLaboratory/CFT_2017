@@ -37,7 +37,7 @@
 <form action="" method="post" name="addtask", class="inline">
     {{form.hidden_tag()}}
 
-    <label for="childrens">childrens</label>
+    <label for="childrens">Дети</label>
     <br>
      {{form.childrens(size=5)}}
         {% for error in form.errors.childrens %}
@@ -45,13 +45,13 @@
         {% endfor %}<br>
 
 
-        <label for="description">description</label>
+        <label for="description">Описание</label>
         <input class="form-control" {{form.description(size=40)}}
         {% for error in form.errors.description %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
-    <p><input type="submit" value="Add"></p>
+    <p><input type="submit" value="Добавить"></p>
 </form>
 </div>
 </body>
