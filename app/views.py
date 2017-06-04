@@ -41,9 +41,8 @@ def index():
                 sql = ("SELECT id_child, name, surname, patronymic FROM children where id_parent = '{}'".format(session['id']))
                 c.execute(sql)
                 balance_c = {child[1]+' '+child[2]+' '+child[3]: balance_child(child[0]) for child in c.fetchall()}
-                print(session["id"])
                 return render_template("index_parent.html",
-                                       len_balance_c=len(balance_c)+1,
+                                       len_balance_c=len(balance_c)+2,
                                        balance_p=balance_p,
                                        balance_c=balance_c,
                                        valid = session['status'])
@@ -53,7 +52,7 @@ def index():
                 c.execute(sql)
                 balance_c = {child[1]+' '+child[2]+' '+child[3]: balance_child(child[0]) for child in c.fetchall()}
                 return render_template("index_children.html",
-                                    len_balance_c=len(balance_c)+1,
+                                    len_balance_c=len(balance_c)+2,
                                        balance_c=balance_c,
                                        valid=session['status'])
     except:
@@ -135,9 +134,9 @@ def add_task():
             form = Addtaskform()
             form.childrens.choices = c.fetchall()
             if form.validate_on_submit():
-                uid_parent = session['id_parent']
-                create_task(uid_parent, form.childrens.data,  form.description.data, form.coin.data)
-                return redirect('/index')
+                uid_parent = session['id']
+                create_task(form.childrens.data, uid_parent, form.description.data, form.coin.data)
+                return redirect('/view_task')
             return render_template('add_task.html',
                                    title='add_task',
                                    form=form,
@@ -149,13 +148,19 @@ def add_task():
 def view_task():
     if session['id'] is not None:
         if session['status'] == 'parent':
+            print (session["id"])
             conn, c = connect_db()
-            sql = ("SELECT children.name, children.surname, children.patronymic, tasks.description, tasks.coin,"
-                   " tasks.status  FROM tasks, children where tasks.id_parent = '{}' and children.id_parent = '{}'"
-                   "".format(session['id'], session['id']))
+            #sql = ("SELECT children.name, children.surname, children.patronymic, tasks.description, tasks.coin,"
+                 #  " tasks.status  FROM tasks, children where tasks.id_parent = '{}' and children.id_parent = '{}'"
+                 #  "".format(session['id'], session['id']))
+
+            sql = ("SELECT id_child, description, coin, status FROM tasks where id_parent = '{}'".format(session['id']))
+            #c.execute(sql)
+            #balance_c = {child[1] + ' ' + child[2] + ' ' + child[3]: balance_child(child[0]) for child in c.fetchall()}
 
             c.execute(sql)
             result = c.fetchall()
+            print (result)
             return render_template('view_task_parent.html', title='view_task',
                                         valid=session['status'],
                                         tasksp=result)

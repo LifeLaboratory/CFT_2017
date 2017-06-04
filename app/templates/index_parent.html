@@ -37,15 +37,33 @@
     </nav>
 
 <div class="container-fluid">
-    Ваш баланс={{balance_p}} <p></p>
-    Ваши дети:<p></p>
+    <p class="text-primary">Ваш баланс={{balance_p}}</p> <p></p>
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr class="active">
+                <th>ФИО детей</th>
+                <th>Баланс на счете нужд</th>
+                <th>Баланс на закрытом счете</th>
+                <th>Баланс на открытом счете</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
                 {% for i in balance_c %}
-                {{i}}
+                <td>{{i}}</td>
                     {%for j in range(len_balance_c)%}
-                        {{balance_c[i][j]}}
-                    {% endfor %}
-                <p></p>
-                {% endfor %}
+                        <td>{{balance_c[i][j]}}</td>
 
-</div>
+                        {% endfor %}
+             </tr>
+                    {% endfor %}
+
+
+
+        </tbody>
+    </table>
+
+
+
 </body>

@@ -34,25 +34,25 @@
 
 
 <div class="container-fluid">
-<form action="" method="post" name="addtask">
+<form action="" method="post" name="addtask", class="inline">
     {{form.hidden_tag()}}
-    <p>
 
-        <h3>Please enter description:</h3><br>
-        {{form.childrens(size=5)}}<br>
+    <label for="login">childrens</label>
+    <br>
+     {{form.childrens(size=5)}}
         {% for error in form.errors.childrens %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
 
-        <h3>Please enter description:</h3><br>
-        {{form.description(size=40)}}<br>
+        <label for="description">description</label>
+        <input class="form-control" {{form.description(size=40)}}
         {% for error in form.errors.description %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
-        <h3>Please enter coin:</h3><br>
-        {{form.coin(size=40)}}<br>
+        <label for="coin">coin</label>
+        <input class="form-control" {{form.coin(size=40)}}
         {% for error in form.errors.coin %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
