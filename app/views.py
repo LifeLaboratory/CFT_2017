@@ -385,6 +385,28 @@ def close_requests():
      #   return redirect('/index')
 
 
+
+@app.route('/pay_children', methods=['GET', 'POST'])
+def pay_children():
+#try:
+    if session['id'] is not None:
+        if session['status'] == 'parent':
+            conn, c = connect_db()
+            sql = ("SELECT id_child, login FROM children where id_parent = '{}'".format(session['id']))
+            c.execute(sql)
+            form = bonusform()
+            form.childrens.choices = c.fetchall()
+            if form.validate_on_submit():
+                transaction.bonus(form.coin.data, session['id'], form.childrens.data)
+                return redirect("/close_requests")
+            return render_template('pay_children.html',
+                                   title='add_task',
+                                   form=form,
+                                   valid=session['status'])
+    #except:
+     #   return redirect('/index')
+
+
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     session.pop('id', None)
