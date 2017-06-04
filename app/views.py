@@ -88,15 +88,15 @@ def registration():
             form=form)
 
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
         data = login_in(form.login.data, form.password.data)
-        if data['id'] == "Error":
-            return "Wrong password or login"
-        else:
+        try:
+            if data['id'] == "Error":
+                return "Wrong password or login"
+        finally:
             session['login'] = form.login.data
             session['id'] = data['id'][0]
             session['status'] = data['status']
