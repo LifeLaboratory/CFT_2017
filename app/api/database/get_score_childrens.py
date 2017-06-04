@@ -15,7 +15,7 @@ def average_score(name_child):
         if DATA[data]['name'] == name_child:
             s = 0
             for score in DATA[data]:
-                print(score)
+                #print(score)
                 if score != 'name':
                     s += float(DATA[data][score])
             score = round(s/(len(DATA[data])-1), 1)

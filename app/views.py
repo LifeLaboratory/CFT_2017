@@ -251,15 +251,17 @@ def add_score():
                      average_score(child[1] + ' ' + child[2] + ' ' + child[3])
                  for child in c.fetchall()}
             s = 0
-            print(111111111111111111)
+            ans = []
             for score in l:
-                #print(score)
-                if score != 'name':
-                    print(l[score])
-                    s += float(l[score])
-            score = round(s/(len(l[score])-1), 1)
+                s = 0
+                for sc in l[score]:
+                    if sc != 'name':
+                        s += float(l[score][sc])
+                ans.append(str(round(s/(len(l[score])-1), 1)))
             return render_template('score.html',
                                    title='add_regex',
+                                   users=l,
+                                   score=ans,
                                    valid=session['status'])
     return redirect('/index')
 
