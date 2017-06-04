@@ -8,7 +8,7 @@ from done_task import not_executed, executed, done, _all
 bot = telebot.TeleBot('334091792:AAExM2izWSclqPoHZ109hrsZK-3cfUAVxzs')
 
 #global _id_parent_
-_id_parent_ = None
+id_parent = None
 id_child = None
 
 try:
@@ -57,7 +57,7 @@ sent_bon - send bonus in open invoices children (commands <coins>)
             conn.commit()
             conn.close()
             bot.send_message(message.chat.id, "Authentication successful")
-            return (_id_parent_, id_child)
+            return (id_parent, id_child)
         #except:
         #    None
         #    bot.send_message(message.chat.id, "Somewhere wrong!")
