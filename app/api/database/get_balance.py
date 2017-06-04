@@ -13,7 +13,7 @@ def balance_child(id):
 
 def balance_parent(id):
     conn, c = connect_db()
-    c.execute("SELECT balance_parent FROM parents where id_parent = '{}'".format(id))
+    c.execute("SELECT balance_needs FROM parents where id_parent = '{}'".format(id))
     result = c.fetchall()
     for i in result[0]:
         result = i

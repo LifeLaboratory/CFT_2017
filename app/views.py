@@ -20,6 +20,7 @@ from app.api.database.get_balance import balance_parent, balance_child
 from app.api.database.get_score_childrens import average_score
 from app.api.database.create_requests import create_requests
 from app.api.database.close_task import close_task_user
+from app.api.database.close_requests_user import close_requests_user
 # for linux
 """
 import sys
@@ -55,7 +56,7 @@ def index():
                 c.execute(sql)
                 balance_c = {child[1]+' '+child[2]+' '+child[3]: balance_child(child[0]) for child in c.fetchall()}
                 return render_template("index_children.html",
-                                    len_balance_c=len(balance_c)+2,
+                                    len_balance_c=len(balance_c)+1,
                                        balance_c=balance_c,
                                        valid=session['status'])
     except:
@@ -283,7 +284,7 @@ def request():
     if session['id'] is not None:
         if session['status'] == 'parent':
             conn, c = connect_db()
-            sql = "SELECT id_child, description, coin FROM requests where id_parent = '{}'".format(session['id'])
+            sql = "SELECT id_child, description, coin FROM requests where id_parent = '{}' and status = 0".format(session['id'])
             c.execute(sql)
             result = c.fetchall()
             ans = []
@@ -309,6 +310,34 @@ def request():
                                    title='add_task',
                                    form=form,
                                    result=result,
+                                   valid=session['status'])
+    #except:
+     #   return redirect('/index')
+
+
+@app.route('/close_requests', methods=['GET', 'POST'])
+def close_requests():
+#try:
+    if session['id'] is not None:
+        if session['status'] == 'parent':
+            conn, c = connect_db()
+            sql = ("SELECT id_requests, description "
+                   "FROM requests where id_parent = '{}'".format(session['id']))
+            c.execute(sql)
+            result = c.fetchall()
+            print(result)
+            form = closetaskform()
+            form.tasks.choices = result
+            if form.validate_on_submit():
+                close_requests_user(form.tasks.data)
+                sql = "select id_child, coin from requests where status = 1 and id_task = '{}'".format(form.tasks.data)
+                c.execute(sql)
+                result = c.fetchall()
+                print(result[0][1], ' ', result[0][0])
+
+
+            return render_template('request_parent.html',
+                                   title='add_task',
                                    valid=session['status'])
     #except:
      #   return redirect('/index')

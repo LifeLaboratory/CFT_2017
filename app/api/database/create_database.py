@@ -55,7 +55,7 @@ def create_table_regex():
 def create_table_requests():
     conn, c = connect_db()
     c.execute('''create table requests (id_requests varchar(255), id_child varchar(255), id_parent varchar(255),
-        description varchar(255), coin int)''')
+        description varchar(255), coin int, status int)''')
     conn.commit()
     conn.close()
 create_table_requests()
