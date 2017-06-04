@@ -1,25 +1,25 @@
 import sqlite3
 
-def _all(id_c):
+def _all(id_p):
     con = sqlite3.connect("database.db")
     c = con.cursor()
-    s = c.execute("SELECT description FROM tasks WHERE id='{}'".format(id_c)).fetchall()
+    s = c.execute("SELECT description FROM tasks WHERE id_parent='{}'".format(id_p)).fetchall()
     con.commit()
     con.close()
-    return(s)
+    return (s)
 
-def not_executed(id_c):
+def not_executed(id_p):
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
-    s2 = c.execute("SELECT description FROM tasks WHERE id='{}' AND status=0".format(id_c)).fetchall()
+    s2 = c.execute("SELECT description FROM tasks WHERE id_parent='{}' AND status=0".format(id_p)).fetchall()
     conn.commit()
     conn.close()
-    return print(s2)
+    return (s2)
 
-def executed(id_c):
+def executed(id_p):
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
-    p = c.execute("SELECT description FROM tasks WHERE status=2 AND id='{}'".format(id_c)).fetchall()
+    p = c.execute("SELECT description FROM tasks WHERE status=2 AND id_parent='{}'".format(id_p)).fetchall()
     conn.commit()
     conn.close()
     return(p)
@@ -27,7 +27,7 @@ def executed(id_c):
 def done(id_task):
     con = sqlite3.connect("database.db")
     c = con.cursor()
-    sql = "UPDATE tasks SET status='{}' WHERE id_task='{}'".format(2, id_task)
+    sql = "UPDATE tasks SET status='{0}' WHERE id_task='{1}'".format(2, id_task)
     c.execute(sql)
     con.commit()
     con.close()

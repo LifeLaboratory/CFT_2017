@@ -2,7 +2,7 @@ import telebot
 import sqlite3
 from transaction import transaction
 from get_balance import balance_child, balance_parent
-from create_task import _task
+from create_task import create_task
 from done_task import not_executed, executed, done, _all
 
 bot = telebot.TeleBot('334091792:AAExM2izWSclqPoHZ109hrsZK-3cfUAVxzs')
@@ -142,7 +142,7 @@ sent_bon - send bonus in open invoices children (commands <coins>)
             if len(tasks) == 0:
                 bot.send_message(message.chat.id, "Please, sent task!")
             else:
-                _task(id_c, '{}'.format(tasks), 10)
+                create_task(id_parent, id_c, '{}'.format(tasks), 10)
                 bot.send_message(message.chat.id, "Create task:%s" % tasks)
 
     @bot.message_handler(commands=['all_t'])
@@ -152,39 +152,41 @@ sent_bon - send bonus in open invoices children (commands <coins>)
         if id_parent == None:
             bot.send_message(message.chat.id, "Need authentication!")
         else:
-            s = _all(id_c)
+            s = _all(id_parent)
+            print(s)
             n = 0
             for i in s:
                 n += 1
-                messages = "Task:{}.".format(i[0])
+                messages = "Task{0}: {1}.".format(n, i[0])
                 bot.send_message(message.chat.id, messages)
 
     @bot.message_handler(commands=['not_exec_t'])
-    def not_execute():
+    def not_execute(message):
         id_parent = id_parent_g
         id_c = id_child
         if id_parent == None:
             bot.send_message(message.chat.id, "Need authentication!")
         else:
-            s = not_executed(id_c)
+            s = not_executed(id_parent)
+            print(s)
             n=0
             for i in s:
                 n += 1
-                messages = "Task:{}. Status: Not executed".format(i[0])
+                messages = "Task{0}: {1}. Not execute".format(n, i[0])
                 bot.send_message(message.chat.id, messages)
 
     @bot.message_handler(commands=['exec_t'])
-    def execute():
+    def execute(message):
         id_parent = id_parent_g
         id_c = id_child
         if id_parent == None:
             bot.send_message(message.chat.id, "Need authentication!")
         else:
-            p = executed()
+            p = executed(id_parent)
             n=0
             for i in p:
                 n+=1
-                messages = "Task:{}. Status:Executed".format(i[0])
+                messages = "Task{0}: {1}. Executed".format(n, i[0])
                 bot.send_message(message.chat.id, messages)
 
     @bot.message_handler(commands=['check_t'])
@@ -196,15 +198,19 @@ sent_bon - send bonus in open invoices children (commands <coins>)
         else:
             row_number = str(message.text)
             l = len(row_number)
-            rowid = int(row_number[8::l])
-            con = sqlite3.connect("database.db")
-            c = con.cursor()
-            s1 = not_executed()
-            c.execute("UPDATE tasks SET status={0} WHERE rowid={1}".format(2, rowid))
-            con.commit()
-            con.close()
-            messages = "Task number {} was execute!".format(rowid)
-            bot.send_message(message.chat.id, messages)
+            rowid = int(row_number[9::l])
+            print(rowid)
+            if len(row_number) < 0:
+                bot.send_message(message.chat.id, "Wrong!")
+            else:
+                con = sqlite3.connect("database.db")
+                c = con.cursor()
+                s1 = not_executed(id_parent)
+                c.execute("UPDATE tasks SET status='{0}' WHERE rowid='{1}'".format(2, rowid))
+                con.commit()
+                con.close()
+                messages = "Task number {} was execute!".format(rowid)
+                bot.send_message(message.chat.id, messages)
 
 except:
         bot.send_message(message.chat.id, "Somewhere wrong!")
