@@ -1,6 +1,13 @@
 import sqlite3
 
-#id_task = {"id_task": '70131fa3-cae0-4733-a55d-bdc8a748fecf',}
+def _all():
+    con = sqlite3.connect("database.db")
+    c = con.cursor()
+    s = c.execute("SELECT description FROM tasks").fetchall()
+    con.commit()
+    con.close()
+    return(s)
+
 def not_executed():
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
@@ -25,7 +32,6 @@ def done(id_task):
     con.commit()
     con.close()
 
-#done(id_task["id_task"])
 def checkdone(description):
     con = sqlite3.connect("database.db")
     c = con.cursor()
@@ -33,14 +39,3 @@ def checkdone(description):
     c.execute(sql)
     con.commit()
     con.close()
-
-def _all():
-    con = sqlite3.connect("database.db")
-    c = con.cursor()
-    s = c.execute("SELECT description FROM tasks").fetchall()
-    con.commit()
-    con.close()
-    return(s)
-
-
-#checkdone(id_task["id_task"])
