@@ -7,7 +7,9 @@ from done_task import not_executed, executed, done, _all
 
 bot = telebot.TeleBot('334091792:AAExM2izWSclqPoHZ109hrsZK-3cfUAVxzs')
 
+#global _id_parent_
 _id_parent_ = None
+id_child = None
 
 try:
     @bot.message_handler(commands=['start'])
@@ -34,48 +36,49 @@ sent_bon - send bonus in open invoices children (commands <coins>)
 
     @bot.message_handler(commands=['login'])
     def login(message):
-        try:
-            row = str(message.text)
-            s = str(row[7::])
+        #try:
+        row = str(message.text)
+        s = str(row[7::])
+        if len(s) == 0:
+            bot.send_message(message.chat.id, "Wrong!")
+        else:
             login = str(s[:s.find(' ')])
             password = str(s[:s.find(' ')])
             conn = sqlite3.connect('database.db')
             c = conn.cursor()
             c.execute("SELECT id_parent FROM parents WHERE login='{0}' and password='{1}'".format(login, password))
+            global _id_parent_
             _id_parent_ = c.fetchall()
-            print(_id_parent_)
+            id_parent = _id_parent_[0][0]
+            c.execute("SELECT id_child FROM children WHERE id_parent='{}'".format(id_parent))
+            _id_child_ = c.fetchall()
+            global id_child
+            id_child = _id_child_[0][0]
             conn.commit()
             conn.close()
             bot.send_message(message.chat.id, "Authentication successful")
-        except:
-            bot.send_message(message.chat.id, "Somewhere wrong!")
+            return (_id_parent_, id_child)
+        #except:
+        #    None
+        #    bot.send_message(message.chat.id, "Somewhere wrong!")
 
     @bot.message_handler(commands=['parent_bal'])
     def parents_balance(message):
+        id_parent = _id_parent_[0][0]
         if _id_parent_ == None:
             bot.send_message(message.chat.id, "Need authentication!")
         else:
-            s = balance_parent(_id_parent_)
+            s = balance_parent(id_parent)
             bot.send_message(message.chat.id, s)
-
-    @bot.message_handler(commands=['sent_n'])
-    def sent_to_needs(message):
-            row_coin = str(message.text)
-            coin = str(row_coin[8::])
-            try:
-                if len(coin) == 0:
-                    bot.send_message(message.chat.id, "Enter coin!")
-                else:
-                    transaction.to_needs(coin, '64e084d3-2787-4782-91b1-cbb82cee6560', '65476977-81e6-4b06-8842-3de38bcb6c4a')
-                    messages = "Ok! Sent to {}".format(coin)
-                    bot.send_message(message.chat.id, messages)
-            except:
-                        bot.send_message(message.chat.id, "Somewhere wrong!")
 
     @bot.message_handler(commands=['child_bal'])
     def children_balance(message):
-        s = balance_child("Sveta1")
-        bot.send_message(message.chat.id, s)
+        id_c = id_child
+        if _id_parent_ == None:
+            bot.send_message(message.chat.id, "Need authentication!")
+        else:
+            s = balance_child(id_c)
+            bot.send_message(message.chat.id, s)
 
     @bot.message_handler(commands=['sent_bon'])
     def bonus_sent(message):
@@ -86,6 +89,27 @@ sent_bon - send bonus in open invoices children (commands <coins>)
                 bot.send_message(message.chat.id, "Enter coin!")
             else:
                 transaction.bonus(coin, '64e084d3-2787-4782-91b1-cbb82cee6560', '65476977-81e6-4b06-8842-3de38bcb6c4a')
+                messages = "Ok! Sent to {}".format(coin)
+                bot.send_message(message.chat.id, messages)
+        except:
+                bot.send_message(message.chat.id, "Somewhere wrong!")
+
+
+    @bot.message_handler(commands=['sent_n'])
+    def sent_to_needs(message):
+        row_coin = str(message.text)
+        coin = str(row_coin[8::])
+        try:
+            if len(coin) == 0:
+                bot.send_message(message.chat.id, "Enter coin!")
+            else:
+                conn = sqlite3.connect("database.db")
+                c = conn.cursor()
+                c.execute("SELECT id_children FROM childrens WHERE id_parent='{}'".format(id_parent))
+                id_children = c.fetchall()
+                conn.commit()
+                conn.close()
+                transaction.to_needs(coin, id_parent, id_children)
                 messages = "Ok! Sent to {}".format(coin)
                 bot.send_message(message.chat.id, messages)
         except:
