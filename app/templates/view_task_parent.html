@@ -26,8 +26,9 @@
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="/view_task">Просмотр заданий</a></li>
                     <li><a href="/create_task">Добавить новое задание</a></li>
-                    <li><a href="/logout">Выход</a></li>
+                    <li><a href="/#">Редактировать задание</a></li>
                     <li><a href="/close_task">Закрыть существующее задание</a></li>
+                    <li><a href="/logout">Выход</a></li>
                 </ul>
             </div>
         </div>
@@ -35,6 +36,27 @@
 
 
 <div class="container-fluid">
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr class="active">
+                <th>ФИО</th>
+                <th>Описание задачи</th>
+                <th>Стоимость</th>
+                <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+
+
+            {% for i in tasksp%}
+            <td>{{i[0]}} {{i[1]}} {{i[2]}}</td> <td>{{i[3]}}</td> <td>{{i[4]}}</td> <td>{{i[5]}}</td>
+</tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
     <!-- фамилия имя отество когда заходит ребенок-->
     <h>{% for i in fio%}
         {{i}}
@@ -48,10 +70,6 @@
 
 
      <!-- фамилия имя отество описание цена статус когда заходит родитель-->
-    <h>{% for i in tasksp%}
-      {{i[0]}} {{i[1]}} {{i[2]}} {{i[3]}} {{i[4]}} {{i[5]}}
-        <br><br>
-        {% endfor %}</h>
 
 </div>
 </body>
