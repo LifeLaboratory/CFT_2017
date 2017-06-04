@@ -248,6 +248,35 @@ def add_regex():
         return redirect('/index')
 
 
+@app.route('/view_regex', methods=['GET', 'POST'])
+def view_regex():
+    if session['id'] is not None:
+        if session['status'] == 'parent':
+            conn, c = connect_db()
+            sql = ("SELECT id_child FROM children where id_parent = '{}'".format(session['id']))
+            c.execute(sql)
+            result_c = c.fetchall()
+            ans = []
+            for child in result_c:
+                print(child)
+                sql = ("SELECT id_child, description FROM regex where id_child = '{}'".format(child[0]))
+                print(sql)
+                c.execute(sql)
+                result_p = c.fetchall()
+                print(result_p)
+                for i in result_p:
+                    sql = "SELECT name, surname, patronymic FROM children where id_child = '{}'".format(i[0])
+                    c.execute(sql)
+                    r = c.fetchall()
+                    ans.append((r[0][0], r[0][1], r[0][2], i[1]))
+            print(ans)
+            return render_template('view_regex.html',
+                                   title='add_regex',
+                                   result=ans,
+                                   valid=session['status'])
+
+
+
 @app.route('/score', methods=['GET', 'POST'])
 def add_score():
     try:
@@ -315,6 +344,7 @@ def request():
             if form.validate_on_submit():
                 uid_parent = session['id']
                 create_requests(uid_parent, form.description.data, form.coin.data)
+                return redirect('/index')
             return render_template('request_child.html',
                                    title='add_task',
                                    form=form,
