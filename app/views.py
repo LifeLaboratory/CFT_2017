@@ -82,8 +82,12 @@ def registration():
                     balance_parent = 0
                     create_parent(form.login.data, form.password.data, form.name.data,
                                 form.surname.data, form.patronymic.data, form.sex.data, form.number_parents.data,
-                                  balance_needs, balance_close, balance_open,
-                                  balance_parent, form.tel_number.data,)
+                                  0, 0, 0,
+                                  0, form.tel_number.data,)
+                    data = login_in(form.login.data, form.password.data)
+                    session['login'] = form.login.data
+                    session['id'] = data['id'][0]
+                    session['status'] = data['status']
                     return redirect('/index')
             else:
                 return "Passwords do not match"
