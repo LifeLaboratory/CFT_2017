@@ -39,25 +39,18 @@ class QIWI():
 
     # print (get_balance())
 
-    def translationQIWI(self, phone_number):
-        data = {
-                "id": "11111111111112",
-                "sum": {
-                        "amount": 2,
-                        "currency": "643",
-                },
-                "paymentMethod": {
-                        "type": "Account",
-                        "accountId": "643",
-                },
-                "comment": "test1",
-                "fields": {
-                        "account": "+79653689542",
-                }
-        }
+    def translationQIWI(self, phone_number, sum, comment):
+        data = '{ "id":"11111111111114", "sum": { "amount":'+str(sum)+', "currency":"643" }, "paymentMethod": { "type":"Account", "accountId":"643" }, "comment":"'+comment+'", "fields": { "account":"'+phone_number+'" } }'
         h = self.session.post("https://edge.qiwi.com/sinap/api/v2/terms/99/payments", data=data)
-        # print(data)
-        # print()
-        return json.loads(h.text)
+        return (h.text)
 
+    def translationCARD(self, card_number, sum, comment):
+        data = '{ "id":"11111111111114", "sum": { "amount":'+str(sum)+', "currency":"643" }, "paymentMethod": { "type":"Account", "accountId":"643" }, "comment":"'+comment+'", "fields": { "account":"'+card_number+'" } }'
+        h = self.session.post("https://edge.qiwi.com/sinap/api/v2/terms/1963/payments", data=data)
+        return (h.text)
 #print (translation_kiwi("+79653689542"))
+
+
+myqiwi=QIWI('+79069700068','3a802710e7f2e71ca559764a8a60df21' )
+#print(myqiwi.translationQIWI("+79653689542",2,"comment"))
+#print(myqiwi.translationCARD("4276020705240411",2,"comment"))
