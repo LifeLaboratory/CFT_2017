@@ -1,5 +1,17 @@
 import sqlite3
 
+
+
+'''
+Здесь api транзакции написанные самостоятельно подразумевающие, что у ребенка есть 3 счета
+Счет нужд, с которого списываются деньги только на обязятельные нужды ребенка, описанные родителем
+
+Закрытый счет. На нем находятся потенциальные деньги ребенка. Сначала родители делают туда перевод.
+Ребенок может получить эти деньги выполняя задания. Деньги будут переходить на открытый счет.
+
+Открытый счет. Деньги, которыми ребенок может пользоваться без ограничений.
+'''
+
 class transaction():
 
     #нужды
@@ -77,7 +89,7 @@ class transaction():
     def bonus(coin, id_p, id_c):
         conn = sqlite3.connect('database.db')
         c = conn.cursor()
-        coin_parents_all = c.execute("SELECT balance_needs FROM parents WHERE id_parent='{}'".format(id_p)).fetchall()
+        coin_parents_all = c.execute("SELECT balance_parent FROM parents WHERE id_parent='{}'".format(id_p)).fetchall()
         print(coin_parents_all)
         for i in coin_parents_all[0]:
             coin_parents_all = i
@@ -86,7 +98,7 @@ class transaction():
         if coin_transaction_from_parents < 0:
             return ("No many")
         else:
-            c.execute("UPDATE parents SET balance_needs='{}' where id_parent = '{}'".format(coin_transaction_from_parents, id_p))
+            c.execute("UPDATE parents SET balance_parent='{}' where id_parent = '{}'".format(coin_transaction_from_parents, id_p))
             # получаем сумму из открытого счета ребенка
             coin_children_open = c.execute(
                 "SELECT balance_open FROM children WHERE id_child='{}'".format(id_c)).fetchall()
@@ -99,20 +111,22 @@ class transaction():
             conn.commit()
             conn.close()
 
-    def mulctl(coin, id_c):
+    def mulctl(coin, id_p, id_c):
         conn = sqlite3.connect('database.db')
         c = conn.cursor()
-        coin_children_open = c.execute("SELECT balance_close, balance_open FROM children WHERE id_child='{}'".format(id_c)).fetchall()
-        coin_children_close = coin_children_open[0][0]
-        coin_children_open = coin_children_open[0][1]
-        coin_transaction_to_open = int(coin_children_open) - int(coin)
-        coin_transaction_to_close = int(coin_children_close) + int(coin)
+        coin_children = c.execute("SELECT balance_open FROM children WHERE id_child='{}'".format(id_c)).fetchall()
+        coin_children_open = coin_children[0]
+        coin_parent = c.execute("SELECT balance_parent FROM parents WHERE id_parent='{}'".format(id_p)).fetchall()
+        coin_parents = coin_parent[0]
+        coin_transaction_to_open = int(coin_children_open[0]) - int(coin)
+        coin_transaction_to_parent = int(coin_parents[0]) + int(coin)
         if coin_transaction_to_open < 0:
             return ("No many")
         else:
             c.execute(
                 "UPDATE children SET balance_open='{0}' WHERE id_child='{1}'".format(coin_transaction_to_open, id_c))
             c.execute(
-                "UPDATE children SET balance_close='{0}' WHERE id_child='{1}'".format(coin_transaction_to_close, id_c))
+                "UPDATE parents SET balance_parent='{}' where id_parent = '{}'".format(coin_transaction_to_parent,
+                                                                                       id_p))
             conn.commit()
             conn.close()

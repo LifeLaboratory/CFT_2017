@@ -25,7 +25,6 @@
             <div>
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="/add_child">Зарегистрировать ребенка</a></li>
-                    <li><a href="/create_regex">Шаблоны нужд</a></li>
                     <li><a href="/view_task">Задачи</a></li>
                     <li><a href="/requests">Запросы от ребенка</a></li>
                     <li><a href="/score">Дневник</a></li>
@@ -84,28 +83,20 @@
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
-         <label for="number_close">Закрытый номер счета</label>
+         <label for="number_close">Номер телефона c QIWI</label>
         <input class="form-control" {{form.number_close(size=40)}}
         {% for error in form.errors.number_close %}
         <span style="color: red;">[{{error}}]</span>
         {% endfor %}<br>
 
-         <label for="number_needs">Номер счета нужд</label>
-        <input class="form-control" {{form.number_needs(size=40)}}
-        {% for error in form.errors.number_needs %}
-        <span style="color: red;">[{{error}}]</span>
-        {% endfor %}<br>
-
-         <label for="number_open">Открытый  номер счета</label>
-        <input class="form-control" {{form.number_open(size=40)}}
-        {% for error in form.errors.number_open %}
-        <span style="color: red;">[{{error}}]</span>
-        {% endfor %}<br>
 
 
 
     <p><input type="submit" value="Зарегестрировать ребенка"></p>
 </form>
 </div>
+
+<h4 class="text-width">Зарегистрируйте ребенка в сервисе. Созданные вами связка логин/пароль будет использовать ваш ребенок
+    при входе в сервис.</h4><br>
 </body>
 </html>

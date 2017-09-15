@@ -25,7 +25,6 @@
             <div>
                 <ul class="nav navbar-nav">
                     <li><a href="/add_child">Зарегистрировать ребенка</a>
-                    <li><a href="/create_regex">Шаблоны нужд</a></li>
                     <li><a href="/view_task">Задачи</a></li>
                     <li><a href="/requests">Запросы от ребенка</a></li>
                     <li><a href="/score">Дневник</a></li>
@@ -45,19 +44,14 @@
         <thead>
             <tr class="active">
                 <th>ФИО детей</th>
-                <th>Баланс на счете нужд</th>
-                <th>Баланс на закрытом счете</th>
-                <th>Баланс на открытом счете</th>
+                <th>Баланс на счете</th>
             </tr>
         </thead>
         <tbody>
         <tr>
                 {% for i in balance_c %}
                 <td>{{i}}</td>
-                    {%for j in range(len_balance_c)%}
-                        <td>{{balance_c[i][j]}}</td>
-
-                        {% endfor %}
+                        <td>{{balance_c[i]}}</td>
              </tr>
                     {% endfor %}
 
@@ -65,6 +59,11 @@
 
         </tbody>
     </table>
+<br><br><br>
+<h4 class="text-width">Это главная страница приложения. </h4><br>
+<h4 class="text-width">Здесь вы можете видеть баланс вашего счета, таблицу с вашими детьми и балансом на их счетах
+</h4><br>
+<h4 class="text-width">В верхней панели вы можете найти функции сервиса</h4><br>
 
 
 

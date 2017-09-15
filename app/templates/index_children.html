@@ -38,22 +38,21 @@
         <thead>
             <tr class="active">
                 <th>ФИО</th>
-                <th>Баланс на счете нужд</th>
-                <th>Баланс на открытом счете</th>
+                <th>Баланс на счете</th>
             </tr>
         </thead>
         <tbody>
                 {% for i in balance_c %}
                 <td>{{i}}</td>
-                    {%for j in range(len_balance_c)%}
-                        <td>{{balance_c[i][j]}}</td>
+                        <td>{{balance_c[i]}}</td>
 
-                        {% endfor %}
              </tr>
                     {% endfor %}
 
 
+<h4 class="text-width">Здесь вы можете видеть ваш баланс</h4><br>
 
 </div>
+
 </body>
 </html>

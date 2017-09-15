@@ -29,7 +29,6 @@ class Regform(FlaskForm):
     surname = TextField('surname', validators=[Required()])
     patronymic = TextField('patronymic', validators=[Required()])
     sex = TextField('sex', validators=[Required()])
-    number_parents = TextField('number_parents', validators=[Required()])
     tel_number = TextField('tel_number', validators=[Required()])
 
 
@@ -42,14 +41,12 @@ class AddchildForm(FlaskForm):
     patronymic = TextField('patronymic', validators=[Required()])
     sex = TextField('sex', validators=[Required()])
     number_close = TextField('number_close', validators=[Required()])
-    number_open = TextField('number_open', validators=[Required()])
-    number_needs = TextField('number_needs', validators=[Required()])
 
 
 class Addtaskform(FlaskForm):
     childrens = SelectField('children')
-    description = StringField('description', [validators.Length(min=10, max=255)])
-    coin = IntegerField('coin', [validators.NumberRange(min=1, max=500)])
+    description = StringField('description', [validators.Length(min=1, max=255)])
+    coin = IntegerField('coin', [validators.NumberRange(min=1, max=50000)])
 
 
 class closetaskform(FlaskForm):
@@ -58,13 +55,13 @@ class closetaskform(FlaskForm):
 
 class addregexform(FlaskForm):
     childrens = SelectField('children')
-    description = StringField('description', [validators.Length(min=10, max=255)])
+    description = StringField('description', [validators.Length(min=1, max=255)])
 
 
 class requestaddform(FlaskForm):
-    description = StringField('description', [validators.Length(min=10, max=255)])
-    coin = IntegerField('coin', [validators.NumberRange(min=1, max=500)])
+    description = StringField('description', [validators.Length(min=1, max=255)])
+    coin = IntegerField('coin', [validators.NumberRange(min=1, max=50000)])
 
 class bonusform(FlaskForm):
     childrens = SelectField('children')
-    coin = IntegerField('coin', [validators.NumberRange(min=1, max=500)])
+    coin = IntegerField('coin', [validators.NumberRange(min=1, max=50000)])

@@ -1,5 +1,9 @@
 import json
 
+''' Получение оценок из дневника. Сейчас оценки берутся из файла score_children.json для показа возможности
+ т.к. Нет доступа до какого либо онлайн дневника для получения реальных значений'''
+
+
 def fi(i):
     i += 1
     return i
@@ -21,4 +25,4 @@ def average_score(name_child):
             score = round(s/(len(DATA[data])-1), 1)
             return DATA[data]
     return None
-#print(average_score())
+#print(average_score("Anton"))
