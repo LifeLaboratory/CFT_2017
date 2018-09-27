@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Add child </title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="/index" class="navbar-brand">Главная</a>
+            </div>
+
+            <div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/add_child">Зарегистрировать ребенка</a></li>
+                    <li><a href="/create_regex">Шаблоны нужд</a></li>
+                    <li><a href="/view_task">Задачи</a></li>
+                    <li><a href="/requests">Запросы от ребенка</a></li>
+                    <li><a href="/score">Дневник</a></li>
+                    <li><a href="/pay_children">Перевести деньги</a></li>
+                    <li><a href="/block_pay_children">Оштрафовать</a></li>
+                    <li><a href="/logout">Выход</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+<div class="container-fluid">
+<form action="" method="post" name="addchild", class="inline">
+    {{form.hidden_tag()}}
+    <label for="Логин">Логин</label>
+    <input class="form-control" {{form.login(size=40)}}
+        {% for error in form.errors.login %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+    <label for="password">Пароль</label>
+    <input class="form-control" {{form.password(size=40)}}
+        {% for error in form.errors.password %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        <label for="PasswordRepeat">Повторите пароль</label>
+        <input class="form-control" {{form.PasswordRepeat(size=40)}}
+        {% for error in form.errors.PasswordRepeat %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        <label for="name">Имя</label>
+        <input class="form-control" {{form.name(size=40)}}
+        {% for error in form.errors.name %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+         <label for="surname">Фамилия</label>
+        <input class="form-control" {{form.surname(size=40)}}
+        {% for error in form.errors.surname %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+         <label for="patronymic">Отчество</label>
+        <input class="form-control" {{form.patronymic(size=40)}}
+        {% for error in form.errors.patronymic %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+
+         <label for="sex">Пол</label>
+        <input class="form-control" {{form.sex(size=40)}}
+        {% for error in form.errors.sex %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+         <label for="number_close">Закрытый номер счета</label>
+        <input class="form-control" {{form.number_close(size=40)}}
+        {% for error in form.errors.number_close %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+         <label for="number_needs">Номер счета нужд</label>
+        <input class="form-control" {{form.number_needs(size=40)}}
+        {% for error in form.errors.number_needs %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+         <label for="number_open">Открытый  номер счета</label>
+        <input class="form-control" {{form.number_open(size=40)}}
+        {% for error in form.errors.number_open %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+
+
+    <p><input type="submit" value="Зарегестрировать ребенка"></p>
+</form>
+</div>
+</body>
+</html>

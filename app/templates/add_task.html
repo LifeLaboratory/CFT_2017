@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Add task </title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="/index" class="navbar-brand">Главная</a>
+            </div>
+
+            <div>
+                <ul class="nav navbar-nav">
+                    <li><a href="/view_task">Просмотр заданий</a</li>
+                    <li class="active"><a href="/create_task">Добавить новое задание</a></li>
+                    <li><a href="/logout">Выход</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+<div class="container-fluid">
+<form action="" method="post" name="addtask", class="inline">
+    {{form.hidden_tag()}}
+
+    <label for="childrens">Дети</label>
+    <br>
+     {{form.childrens(size=5)}}
+        {% for error in form.errors.childrens %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+
+        <label for="description">Описание</label>
+        <input class="form-control" {{form.description(size=40)}}
+        {% for error in form.errors.description %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+        <label for="coin">Цена</label>
+        <input class="form-control" {{form.coin(size=40)}}
+        {% for error in form.errors.coin %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+
+    <p><input type="submit" value="Добавить"></p>
+</form>
+</div>
+</body>
+</html>

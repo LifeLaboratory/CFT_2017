@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<body>
+<head>
+<meta charset="utf-8">
+<title>Регистрация </title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="/index" class="navbar-brand">Главная</a>
+            </div>
+
+            <div>
+                <ul class="nav navbar-nav">
+                    <li  class="active"><a href="/registration">Регистрация</a</li>
+                    <li><a href="/login">Авторизация</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<div class="container-fluid">
+<form action="" method="post" name="registration">
+    {{form.hidden_tag()}}
+    <p>
+        <h3>Логин: </h3>
+         {{form.login(size=40)}}
+        {% for error in form.errors.login %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}
+
+
+        <h3>Пароль:</h3>
+        {{form.password(size=40)}}
+        {% for error in form.errors.password %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}
+
+        <h3>Повторите пароль:</h3>
+        {{form.PasswordRepeat(size=40)}}
+        {% for error in form.errors.PasswordRepeat %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}
+
+        <h3>Имя:</h3>
+        {{form.name(size=40)}}
+        {% for error in form.errors.name %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}
+
+        <h3>Фамилия:</h3>
+        {{form.surname(size=40)}}
+        {% for error in form.errors.surname %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}
+
+        <h3>Отчество:</h3>
+        {{form.patronymic(size=40)}}
+        {% for error in form.errors.patronymic %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}
+
+        <h3>Пол:</h3>
+        {{form.sex(size=40)}}
+        {% for error in form.errors.sex %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}
+
+        <h3>Номер вашей банковской карты:</h3>
+        {{form.number_parents(size=40)}}
+        {% for error in form.errors.number_parents %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}
+
+
+        <h3>Номер телефона:</h3>
+        {{form.tel_number(size=40)}}
+        {% for error in form.errors.tel_number %}
+        <span style="color: red;">[{{error}}]</span>
+        {% endfor %}<br>
+
+    </p>
+    <p><input type="submit" value="Зарегестрироваться"></p>
+</form>
+</body>
+</html>

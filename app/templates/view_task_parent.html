@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Задачи </title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="/index" class="navbar-brand">Главная</a>
+            </div>
+
+            <div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/view_task">Просмотр заданий</a></li>
+                    <li><a href="/create_task">Добавить новое задание</a></li>
+                    <li><a href="/close_task">Закрыть выполненные ребенком задания</a></li>
+                    <li><a href="/logout">Выход</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+<div class="container-fluid">
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr class="active">
+                <th>ФИО</th>
+                <th>Описание задачи</th>
+                <th>Стоимость</th>
+                <th>Статус</th>
+                <th> </th>
+            </tr>
+        </thead>
+        <body>
+        <tr>
+
+
+            {% for i in tasksp%}
+            <td>{{i[0]}} {{i[1]}} {{i[2]}}</td> <td>{{i[3]}}</td> <td>{{i[4]}}</td>
+                {% if i[5] == 0 %}
+                    <td>Открытая задача</td>
+                {% elif i[5] == 1 %}
+                    <td>Сдал родителям задача</td>
+                {% else %}
+                    <td>Закрытая задача</td>
+                {% endif %}
+            <td><form action="" method="post" name="addtask">
+
+            </td>
+</tr>
+            {% endfor %}
+    </table>
+
+
+
+</div>
+</body>
+</html>
